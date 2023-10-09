@@ -1,0 +1,10 @@
+---
+title: "source-data"
+output: html_document
+---
+loading murder data into r variable 
+```{r setup, include=FALSE}
+library(tidyverse)
+murders <- read.csv("../murders-project-old/data-murders.csv")
+```
+
