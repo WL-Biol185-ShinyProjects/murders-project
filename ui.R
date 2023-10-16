@@ -1,14 +1,14 @@
 library(shiny)
 library(tidyverse)
+library(leaflet)
 
-##source
 murder_table <- readRDS("murders.RData")
 
 fluidPage(
-  titlePanel("Murder Map"),
-  leafletOutput("world_map"),
+  leafletOutput("StateMap"),
+  titlePanel("State-Map"),
   sidebarLayout(
     sidebarPanel,
-    mainPanel = mainPanel(plotOutput("##"))
+    mainPanel = mainPanel(plotOutput("StateMap"))
   )
 )
