@@ -1,17 +1,24 @@
 library(shiny)
 library(leaflet)
-
+library(geojsonio)
+library(tidyverse)
 
 murder_table <- readRDS("murders.RData")
 
 geo <- geojson_read("us-states.json", what = "sp")
-joint_data <- left_join(geo@data, murder_table, by = c("NAME" = "State"))
-joint_data %>% 
-  filter()
+geo@data <- left_join(geo@data, murder_table, by = c("name" = "State"))
+
+
+function(input, output, session) {
   
-function(input, output) {
-  output$StateMap <- renderPlot({
+ 
+  output$StateMap <- renderLeaflet({
+ print("yay")
     leaflet(geo) %>%
-      addPolygons(fillColor = ~pal(State))
-  })
+      addTiles()
+      # setView(-96, 37.8, 4) %>%
+      # addProviderTiles(providers$CartoDB.Positron)
+})
 }
+
+
