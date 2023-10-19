@@ -17,3 +17,11 @@ function(input, output) {
       addPolygons(fillColor = ~pal(State))
   })
 }
+
+#incident_per_state <- murder_table %>% 
+#  group_by(State) %>%
+#  summarise(total_murders = n()) %>%
+#  filter(!row_number() %in% c(9))
+
+#data table with number of murders per state. Tried to run in geo and app
+#crashed
