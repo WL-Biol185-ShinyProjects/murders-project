@@ -21,7 +21,7 @@ function(input, output, session) {
 })
 }
 
-<<<<<<< HEAD
+
 #incident_per_state <- murder_table %>% 
 #  group_by(State) %>%
 #  summarise(total_murders = n()) %>%
@@ -29,6 +29,4 @@ function(input, output, session) {
 
 #data table with number of murders per state. Tried to run in geo and app
 #crashed
-=======
 
->>>>>>> 9368bd3f96668b5fabd8b69fa347fab0727312aa
