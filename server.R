@@ -27,6 +27,5 @@ function(input, output, session) {
 #  summarise(total_murders = n()) %>%
 #  filter(!row_number() %in% c(9))
 
-#data table with number of murders per state. Tried to run in geo and app
-#crashed
+#data table with number of murders per state
 
