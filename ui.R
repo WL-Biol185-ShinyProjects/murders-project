@@ -12,3 +12,4 @@ fluidPage(
     mainPanel = mainPanel(plotOutput("##"))
   )
 )
+
