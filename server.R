@@ -4,15 +4,37 @@ library(geojsonio)
 library(tidyverse)
 
 murder_table <- readRDS("murders.RData")
-geo <- geojson_read("us-states.json", what = "sp")
-geo@data <- left_join(geo@data, murder_table, by = c("name" = "State"))
+geo <- geojson_read("states.geo.json", what = "sp")
 
+incident_per_state <- murder_table %>%
+  group_by(State) %>%
+  summarise(total_murders = n()) %>%
+  filter(!row_number() %in% c(52))
 
+geo@data <- left_join(geo@data, incident_per_state, by = c("NAME" = "State"))
 
-# function(input, output, session) {
-#   output$StateMap <- renderLeaflet({
-#     leaflet(geo) %>%
-#       addTiles()
+location_data <- geo@data
+
+bins <- c(10,20,50,100,200,500,1000, Inf)
+
+pal <- colorBin("YlOrRd", domain = geo@data$total_murders, bins = bins)
+
+function(input, output, session) {
+  output$StateMap <- renderLeaflet({
+    print("render")
+    leaflet(geo)%>%
+      setView(-96, 37.8, 4) %>%
+    addPolygons(
+      # fillColor = ~pal(total_murders),
+      weight = 2,
+      opacity = 1,
+      color = "white",
+      dashArray = "3",
+      fillOpacity = 0.7)
+      
+    })}
+    
+      # addTiles()
 #       # setView(-96, 37.8, 4) %>%
 #       # addProviderTiles(providers$CartoDB.Positron
 #     
@@ -38,12 +60,12 @@ geo@data <- left_join(geo@data, murder_table, by = c("name" = "State"))
 #       paste(as.character(input$dateRange2), collapse = " to ")
 #         )
 #       })
-#     })
+    
 
-function(input, output, session) {
-  output$StateMap <- renderLeaflet({
-    leaflet(geo) %>%
-      addTiles()
+# function(input, output, session) {
+#   output$StateMap <- renderLeaflet({
+#     leaflet(geo) %>%
+#       addTiles()
       # setView(-96, 37.8, 4) %>%
       # addProviderTiles(providers$CartoDB.Positron
     
@@ -90,14 +112,11 @@ function(input, output, session) {
   #       label = finalDogData$Breed,
   #       
  #     )
-  })
-}
+#   })
+# }
+# 
+# 
 
-
-incident_per_state <- murder_table %>%
- group_by(State) %>%
- summarise(total_murders = n()) %>%
- filter(!row_number() %in% c(9))
 
 #data table with number of murders per state
 

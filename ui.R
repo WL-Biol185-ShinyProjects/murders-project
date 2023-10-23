@@ -6,9 +6,11 @@ murder_table <- readRDS("murders.RData")
 
 fluidPage(
   titlePanel("StateMap"), #Puts words stateMap on page
-  mainPanel,
-  leafletOutput(outputId = 'map', width = "100%", height = "100%"), #Creates a map)
-  
+  mainPanel(
+leafletOutput(outputId = "StateMap", width = "100%", height = "100%") 
+))
+   
+#Creates a map
   # titlePanel("Dates and date ranges"),
   # column(4, wellPanel(
   #   dateInput('date',
@@ -47,5 +49,5 @@ fluidPage(
   #        verbatimTextOutput("dateText2"),
   #        verbatimTextOutput("dateRangeText"),
   #        verbatimTextOutput("dateRangeText2")
-  ))
-  
+  # ))
+  # 
