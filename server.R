@@ -11,7 +11,7 @@ incident_per_state <- murder_table %>%
   summarise(total_murders = n()) %>%
   filter(!row_number() %in% c(52))
 
-geo@data <- left_join(geo@data, incident_per_state, by = c("NAME" = "State"))
+geo <- left_join(geo@data, incident_per_state, by = c("NAME" = "State"))
 
 location_data <- geo@data
 
