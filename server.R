@@ -21,7 +21,6 @@ pal <- colorBin("YlOrRd", domain = geo@data$total_murders, bins = bins)
 
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
-    print("render")
     leaflet(geo) %>%
       print("leaflet") %>%
       setView(-96, 37.8, 4) %>%
