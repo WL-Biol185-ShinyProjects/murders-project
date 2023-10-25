@@ -23,6 +23,7 @@ function(input, output, session) {
   output$StateMap <- renderLeaflet({
     print("render")
     leaflet(geo) %>%
+      print("leaflet") %>%
       setView(-96, 37.8, 4) %>%
     addPolygons(
       fillColor = ~pal(geo_data$total_murders),
