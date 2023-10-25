@@ -31,6 +31,9 @@ function(input, output, session) {
       color = "white",
       dashArray = "3",
       fillOpacity = 0.7)
+    # addCircleMarkers(
+    #   radius=~total_murders, color=~pal(type), stroke=FALSE, fillOpacity= 0.5
+    # )
       
   })
   }
