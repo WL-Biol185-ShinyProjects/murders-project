@@ -11,13 +11,13 @@ incident_per_state <- murder_table %>%
   summarise(total_murders = n()) %>%
   filter(!row_number() %in% c(52))
 
-geo_data <- left_join(geo@data, incident_per_state, by = c("NAME" = "State"))
+geo@data <- left_join(geo@data, incident_per_state, by = c("NAME" = "State"))
 
 # location_data <- geo@data
 
 bins <- c(10,20,50,100,200,500,1000, Inf)
 
-pal <- colorBin("YlOrRd", domain = geo_data$total_murders, bins = bins)
+pal <- colorBin("YlOrRd", domain = geo@data$total_murders, bins = bins)
 
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
@@ -26,14 +26,15 @@ function(input, output, session) {
       print("leaflet") %>%
       setView(-96, 37.8, 4) %>%
     addPolygons(
-      fillColor = ~pal(geo_data$total_murders),
+      fillColor = ~pal(total_murders),
       weight = 2,
       opacity = 1,
       color = "white",
       dashArray = "3",
       fillOpacity = 0.7)
       
-    })}
+  })
+  }
     
       # addTiles()
 #       # setView(-96, 37.8, 4) %>%

@@ -7,8 +7,9 @@ murder_table <- readRDS("murders.RData")
 fluidPage(
   titlePanel("StateMap"), #Puts words stateMap on page
   mainPanel(
-leafletOutput(outputId = "StateMap", width = "100%", height = "100%") 
-))
+leafletOutput(outputId = "StateMap")
+  )
+)
    
 #Creates a map
   # titlePanel("Dates and date ranges"),
