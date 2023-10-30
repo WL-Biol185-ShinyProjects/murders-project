@@ -13,7 +13,6 @@ incident_per_state <- murder_table %>%
 
 geo@data <- left_join(geo@data, incident_per_state, by = c("NAME" = "State"))
 
-# location_data <- geo@data
 
 bins <- c(10,20,50,100,200,500,1000, Inf)
 
@@ -30,7 +29,7 @@ function(input, output, session) {
       opacity = 1,
       color = "white",
       dashArray = "3",
-      fillOpacity = 0.7) %>%
+      fillOpacity = 0.7)
       # addMarkers(Coordinates$latitude,Coordinates$longitude, options=popupOptions(closeButton = FALSE))
     # addCircleMarkers(
     #   radius=~total_murders, color=~pal(type), stroke=FALSE, fillOpacity= 0.5
