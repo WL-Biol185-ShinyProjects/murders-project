@@ -34,8 +34,8 @@ function(input, output, session) {
       opacity = 1,
       color = "white",
       dashArray = "3",
-      fillOpacity = 0.7)
-      # addMarkers(popup = ~State)
+      fillOpacity = 0.7) %>%
+    addMarkers(lng = geo@data$longitude, lat = geo@data$latitude)
     # addCircleMarkers(
     #   radius=~total_murders, color=~pal(type), stroke=FALSE, fillOpacity= 0.5
     # )
