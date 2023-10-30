@@ -11,7 +11,12 @@ incident_per_state <- murder_table %>%
   summarise(total_murders = n()) %>%
   filter(!row_number() %in% c(52))
 
-geo@data <- left_join(geo@data, incident_per_state, by = c("NAME" = "State"))
+Coordinates <- read.csv("us-state-capitals.csv")
+
+Coordinates$description <- NULL
+popup_coordinates <- left_join(incident_per_state, Coordinates, c("State" = "name"))
+
+geo@data <- left_join(geo@data, popup_coordinates, by = c("NAME" = "State"))
 
 
 bins <- c(10,20,50,100,200,500,1000, Inf)
@@ -30,7 +35,7 @@ function(input, output, session) {
       color = "white",
       dashArray = "3",
       fillOpacity = 0.7)
-      # addMarkers(Coordinates$latitude,Coordinates$longitude, options=popupOptions(closeButton = FALSE))
+      # addMarkers(popup = ~State)
     # addCircleMarkers(
     #   radius=~total_murders, color=~pal(type), stroke=FALSE, fillOpacity= 0.5
     # )
