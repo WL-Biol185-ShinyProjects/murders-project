@@ -36,13 +36,16 @@ function(input, output, session) {
       color = "white",
       dashArray = "3",
       fillOpacity = 0.7) %>%
-    addMarkers(lng = geo@data$longitude, lat = geo@data$latitude)%>%
-    addLegend("bottomright", pal = pal, values = ~total_murders)
+    addMarkers(lng = geo@data$longitude, lat = geo@data$latitude) %>%
+    addLegend("bottomright", 
+              pal = pal, 
+              values = ~total_murders)
     # addCircleMarkers(
     #   radius=~total_murders, color=~pal(type), stroke=FALSE, fillOpacity= 0.5
     # )
       
   })
-  }
+}
+
     
      
