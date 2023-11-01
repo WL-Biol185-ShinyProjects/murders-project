@@ -11,6 +11,7 @@ incident_per_state <- murder_table %>%
   summarise(total_murders = n()) %>%
   filter(!row_number() %in% c(52))
 
+
 Coordinates <- read.csv("us-state-capitals.csv")
 
 Coordinates$description <- NULL
