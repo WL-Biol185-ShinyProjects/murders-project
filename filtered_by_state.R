@@ -5,15 +5,15 @@ library(tidyverse)
 
 Alabama <- murder_table %>%
   filter(State == "Alabama")
-
+ 
 Alabama_weapon <- Alabama[, -c(2:12)] 
-  names(which.max(table(Alabama_weapon$Weapon)))
+Alabama$age_alabama <- names(which.max(table(Victim.Age)))
 
 Alaska <- murder_table %>%
     filter(State == "Alaska")
   
 Alaska_weapon <- Alaska[, -c(2:12)] 
-  names(which.max(table(Alaska_weapon$Weapon)))
+wepon_alaska <- names(which.max(table(Alaska_weapon$Weapon)))
 
 Arizona <- murder_table %>%
   filter(State == "Arizona")
@@ -265,11 +265,11 @@ Utah <- murder_table %>%
 Utah_weapon <- Utah[, -c(2:12)] 
 names(which.max(table(Utah_weapon$Weapon)))
 
-Vermount <- murder_table %>%
-  filter(State == "Vermount ")
+Vermont <- murder_table %>%
+  filter(State == "Vermont ")
 
-Vermount_weapon <- Vermount[, -c(2:12)] 
-names(which.max(table(South_Carolina_weapon$Weapon)))
+Vermont_weapon <- Vermont[, -c(2:12)] 
+names(which.max(table(Vermont_weapon$Weapon)))
 
 Virginia <- murder_table %>%
   filter(State == "Virginia")
