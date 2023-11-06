@@ -3,6 +3,8 @@ library(leaflet)
 library(geojsonio)
 library(tidyverse)
 
+##Making state tables for individual features 
+
 Alabama <- murder_table %>%
   filter(State == "Alabama")
  
