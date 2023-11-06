@@ -6,8 +6,7 @@ library(tidyverse)
 Alabama <- murder_table %>%
   filter(State == "Alabama")
  
-Alabama_weapon <- Alabama[, -c(2:12)] 
-Alabama$age_alabama <- names(which.max(table(Victim.Age)))
+Alabama$age_average <-(which.max(Alabama$Victim.Age))
 
 Alaska <- murder_table %>%
     filter(State == "Alaska")
