@@ -5,29 +5,29 @@ library(tidyverse)
 library(htmltools)
 library(glue)
 
-murder_table <- readRDS("murders.RData")
-geo <- geojson_read("states.geo.json", what = "sp")
+##Calling initial data and filtering data
+source("murder_table.R")
 
-incident_per_state <- murder_table %>%
-  group_by(State) %>%
-  summarise(total_murders = n()) %>%
-  filter(!row_number() %in% c(52))
+##Calling coordinate data
+source("coordinates.R")
 
-Coordinates <- read.csv("us-state-capitals.csv")
-
-Coordinates$description <- NULL
-popup_coordinates <- left_join(incident_per_state, Coordinates, c("State" = "name"))
-
+##Calling state_function to summarize statistics for each state into the most common aspects of crimes 
 source("state_function.R")
 
-geo@data <- left_join(geo@data, popup_data, by = c("NAME" = "State"))
+##Joining geojson data with statistical data
+geo@data <- left_join(geo@data, 
+                      popup_data, 
+                      by = c("NAME" = "State"))
 
-bins <- c(10,20,50,100,200,500,1000, Inf)
+##Defining palette
+qpal <- colorQuantile("Reds",
+                geo@data$total_murders,
+                n = 7)
 
-pal <- colorBin("YlOrRd", domain = geo@data$total_murders, bins = bins)
-
+##Formatting text for popups 
 label_text <- glue(
   "<b>State: </b> {geo@data$NAME}<br/>",
+  "<b>Total Murders: </b> {geo@data$total_murders}<br/>",
   "<b>Victim Age: </b> {geo@data$Common_Victim_Age}<br/>", 
   "<b>Victim Race: </b> {geo@data$Common_Victim_Race}<br/>",
   "<b>Victim Sex: </b> {geo@data$Common_Victim_Sex}<br/>",
@@ -39,29 +39,26 @@ label_text <- glue(
 ) %>%
   lapply(htmltools::HTML)
 
-
+##Drawing the map
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
     leaflet(geo) %>%
       print("leaflet") %>%
       setView(-96, 37.8, 4) %>%
     addPolygons(
-      fillColor = ~pal(total_murders),
+      fillColor = ~qpal(total_murders),
       weight = 2,
       opacity = 1,
       color = "white",
       dashArray = "3",
+      smoothFactor = 0.2,
       fillOpacity = 0.7) %>%
-    addMarkers(lng = geo@data$longitude, lat = geo@data$latitude, popup = label_text) %>%
+    addMarkers(lng = geo@data$longitude, 
+               lat = geo@data$latitude, 
+               popup = label_text) %>%
     addLegend("bottomright", 
-              pal = pal, 
+              pal = qpal, 
               values = ~total_murders)
-    # addCircleMarkers(
-    #   radius=~total_murders, color=~pal(type), stroke=FALSE, fillOpacity= 0.5
-    # )
-      
-  })
+     })
 }
 
-# ~htmlEscape(c(geo@data$NAME, geo@data$Common_Perpetrator_Age))
-     
