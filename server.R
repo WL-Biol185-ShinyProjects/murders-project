@@ -60,5 +60,8 @@ function(input, output, session) {
               pal = qpal, 
               values = ~total_murders)
      })
+  observe({
+  leafletProxy("StateMap", data = murder_table)
+  })
 }
 
