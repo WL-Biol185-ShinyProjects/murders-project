@@ -14,10 +14,6 @@ source("coordinates.R")
 ##Calling state_function to summarize statistics for each state into the most common aspects of crimes 
 source("state_function.R")
 
-##Joining geojson data with statistical data
-geo@data <- left_join(geo@data, 
-                      popup_data, 
-                      by = c("NAME" = "State"))
 
 ##Defining palette
 qpal <- colorQuantile("Reds",
@@ -42,6 +38,10 @@ label_text <- glue(
 ##Drawing the map
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
+    ##Joining geojson data with statistical data
+    geo@data <- left_join(geo@data, 
+                          popup_data, 
+                          by = c("NAME" = "State")) %>%
     leaflet(geo) %>%
       print("leaflet") %>%
       setView(-96, 37.8, 4) %>%
