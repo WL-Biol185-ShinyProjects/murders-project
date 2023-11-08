@@ -5,10 +5,10 @@ library(leaflet)
 murder_table <- readRDS("murders.RData")
 
 fluidPage(
-  titlePanel("StateMap"), #Puts words stateMap on page
+  titlePanel("State Map"), 
   mainPanel(
-leafletOutput(outputId = "StateMap")
-  )
+    leafletOutput(outputId = "StateMap")
+    )
 )
    
 #Creates a map
