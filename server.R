@@ -21,25 +21,27 @@ qpal <- colorQuantile("Reds",
                 n = 7)
 
 ##Formatting text for popups 
-label_text <- glue(
-  "<b>State: </b> {geo@data$NAME}<br/>",
-  "<b>Total Murders: </b> {geo@data$total_murders}<br/>",
-  "<b>Victim Age: </b> {geo@data$Common_Victim_Age}<br/>", 
-  "<b>Victim Race: </b> {geo@data$Common_Victim_Race}<br/>",
-  "<b>Victim Sex: </b> {geo@data$Common_Victim_Sex}<br/>",
-  "<b>Relationship: </b> {geo@data$Common_Relationship}<br/>",
-  "<b>Weapon: </b> {geo@data$Common_Weapon}<br/>",
-  "<b>Perpetrator Age: </b> {geo@data$Common_Perpetrator_Age}<br/>",
-  "<b>Perpetrator Race: </b> {geo@data$Common_Perpetrator_Race}<br/>",
-  "<b>Perpetrator Sex: </b> {geo@data$Common_Perpetrator_Sex}<br/>"
-) %>%
-  lapply(htmltools::HTML)
+
 
 ##Drawing the map
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
     ##Joining geojson data with statistical data
-    (geo@data <- left_join(geo@data, popup_data, by = c("NAME" = "State")))
+
+    (geo@data <- left_join(geo@data,popup_data, by = c("NAME" = "State")))
+    (label_text <- glue(
+      "<b>State: </b> {geo@data$NAME}<br/>",
+      "<b>Total Murders: </b> {geo@data$total_murders}<br/>",
+      "<b>Victim Age: </b> {geo@data$Common_Victim_Age}<br/>", 
+      "<b>Victim Race: </b> {geo@data$Common_Victim_Race}<br/>",
+      "<b>Victim Sex: </b> {geo@data$Common_Victim_Sex}<br/>",
+      "<b>Relationship: </b> {geo@data$Common_Relationship}<br/>",
+      "<b>Weapon: </b> {geo@data$Common_Weapon}<br/>",
+      "<b>Perpetrator Age: </b> {geo@data$Common_Perpetrator_Age}<br/>",
+      "<b>Perpetrator Race: </b> {geo@data$Common_Perpetrator_Race}<br/>",
+      "<b>Perpetrator Sex: </b> {geo@data$Common_Perpetrator_Sex}<br/>"
+    ) %>%
+        lapply(htmltools::HTML))
     leaflet(geo) %>%
       setView(-96, 37.8, 4) %>%
     addPolygons(
