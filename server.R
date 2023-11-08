@@ -5,6 +5,7 @@ library(tidyverse)
 library(htmltools)
 library(glue)
 
+
 ##Calling initial data and filtering data
 source("murder_table.R")
 
