@@ -49,17 +49,21 @@ function(input, output, session) {
       opacity = 1,
       color = "white",
       dashArray = "3",
-      smoothFactor = 0.2,
-      fillOpacity = 0.7) %>%
+      fillOpacity = 0.7) 
     addMarkers(lng = geo@data$longitude, 
                lat = geo@data$latitude, 
                popup = label_text) %>%
-    addLegend("bottomright", 
-              pal = qpal, 
-              values = ~total_murders)
-     })
+      addLegend("bottomright", 
+                pal = qpal, 
+                values = ~total_murders)
+  })
   observe({
-  leafletProxy("StateMap", data = murder_table)
+    leafletProxy("StateMap", data = murder_table)
   })
 }
+
+
+
+    
+      
 
