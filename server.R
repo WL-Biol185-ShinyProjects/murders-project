@@ -30,14 +30,14 @@ function(input, output, session) {
       opacity = 1,
       color = "white",
       dashArray = "3",
-      fillOpacity = 0.7) %>%
+      fillOpacity = 0.7) 
       # addMarkers(Coordinates$latitude,Coordinates$longitude, options=popupOptions(closeButton = FALSE))
     # addCircleMarkers(
     #   radius=~total_murders, color=~pal(type), stroke=FALSE, fillOpacity= 0.5
     # )
       
   })
-  }
+   }
     
       # addTiles()
 #       # setView(-96, 37.8, 4) %>%
