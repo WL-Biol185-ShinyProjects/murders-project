@@ -51,15 +51,21 @@ function(input, output, session) {
       opacity = 1,
       color = "white",
       dashArray = "3",
-<<<<<<< HEAD
       fillOpacity = 0.7) 
-      # addMarkers(Coordinates$latitude,Coordinates$longitude, options=popupOptions(closeButton = FALSE))
-    # addCircleMarkers(
-    #   radius=~total_murders, color=~pal(type), stroke=FALSE, fillOpacity= 0.5
-    # )
-      
+    addMarkers(lng = geo@data$longitude, 
+               lat = geo@data$latitude, 
+               popup = label_text) %>%
+      addLegend("bottomright", 
+                pal = qpal, 
+                values = ~total_murders)
   })
-   }
+  observe({
+    leafletProxy("StateMap", data = murder_table)
+  })
+}
+
+
+
     
       # addTiles()
 #       # setView(-96, 37.8, 4) %>%
@@ -145,20 +151,5 @@ function(input, output, session) {
 # 
 
 
-#data table with number of murders per state
-=======
-      smoothFactor = 0.2,
-      fillOpacity = 0.7) %>%
-    addMarkers(lng = geo@data$longitude, 
-               lat = geo@data$latitude, 
-               popup = label_text) %>%
-    addLegend("bottomright", 
-              pal = qpal, 
-              values = ~total_murders)
-     })
-  observe({
-  leafletProxy("StateMap", data = murder_table)
-  })
-}
->>>>>>> d0caaada293497f75bd5a898ffd545515a3c9988
+
 
