@@ -35,13 +35,12 @@ label_text <- glue(
 ) %>%
   lapply(htmltools::HTML)
 
-##Drawing the map
+##Drawing the map    
+##Joining geojson data with statistical data
+
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
-    ##Joining geojson data with statistical data
-    geo@data <- left_join(geo@data, 
-                          popup_data, 
-                          by = c("NAME" = "State")) %>%
+    geo@data <- left_join(geo@data, popup_data,by = c("NAME" = "State")) %>%
     leaflet(geo) %>%
       print("leaflet") %>%
       setView(-96, 37.8, 4) %>%
@@ -53,9 +52,10 @@ function(input, output, session) {
       dashArray = "3",
       smoothFactor = 0.2,
       fillOpacity = 0.7) %>%
-    addMarkers(lng = geo@data$longitude, 
-               lat = geo@data$latitude, 
-               popup = label_text) %>%
+    addMarkers(lng = geo@data$lon, 
+               lat = geo@data$lat, 
+               popup = label_text,
+               NULL = FALSE) %>%
     addLegend("bottomright", 
               pal = qpal, 
               values = ~total_murders)
