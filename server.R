@@ -39,11 +39,8 @@ label_text <- glue(
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
     ##Joining geojson data with statistical data
-    geo@data <- left_join(geo@data, 
-                          popup_data, 
-                          by = c("NAME" = "State")) %>%
+    (geo@data <- left_join(geo@data, popup_data, by = c("NAME" = "State")))
     leaflet(geo) %>%
-      print("leaflet") %>%
       setView(-96, 37.8, 4) %>%
     addPolygons(
       fillColor = ~qpal(total_murders),
