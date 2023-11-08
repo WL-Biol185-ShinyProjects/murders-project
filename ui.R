@@ -4,13 +4,12 @@ library(leaflet)
 
 murder_table <- readRDS("murders.RData")
 
-fluidPage(
+bootstrapPage(
   titlePanel("State Map"), 
-  mainPanel(
-    leafletOutput(outputId = "StateMap")
-    )
-)
-   
+  mainPanel(leafletOutput(outputId = "StateMap"),
+            sliderInput("range","Year",min(total_murders$Year),max(total_murders$Year), value = range(total_murders$Year), step = 1),
+            checkboxInput("legend", "Show legend", TRUE))
+  )
 #Creates a map
   # titlePanel("Dates and date ranges"),
   # column(4, wellPanel(
