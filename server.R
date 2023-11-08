@@ -27,8 +27,7 @@ qpal <- colorQuantile("Reds",
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
     ##Joining geojson data with statistical data
-
-    (geo@data <- left_join(geo@data,popup_data, by = c("NAME" = "State")))
+    (geo@data <- left_join(geo@data, popup_data, by = c("NAME" = "State")))
     (label_text <- glue(
       "<b>State: </b> {geo@data$NAME}<br/>",
       "<b>Total Murders: </b> {geo@data$total_murders}<br/>",
@@ -50,13 +49,14 @@ function(input, output, session) {
       opacity = 1,
       color = "white",
       dashArray = "3",
-      fillOpacity = 0.7) 
-    addMarkers(lng = geo@data$longitude, 
-               lat = geo@data$latitude, 
-               popup = label_text) %>%
-      addLegend("bottomright", 
-                pal = qpal, 
-                values = ~total_murders)
+      fillOpacity = 0.7) %>% 
+    addMarkers(lng = geo@data$longitude,
+               lat = geo@data$latitude,
+               popup = label_text) %>% 
+    addLegend("bottomright",
+              pal = qpal,
+              values = ~total_murders) %>% 
+      fitBounds(~min(lng), ~min(lat), ~max(lng), ~max(lat))
   })
   observe({
     leafletProxy("StateMap", data = murder_table)
