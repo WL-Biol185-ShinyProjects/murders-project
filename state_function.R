@@ -19,4 +19,9 @@ popup_table <- murder_table %>%
 ##Joining coordinate and popup data
 Coordinates$description <- NULL
 popup_data <- left_join(popup_table, popup_coordinates, c("State" = "State"))
+
+##Filtering data set for slider
+filteredData <- reactive({
+  popup_data(popup_data$Year >= input$range[1] & popup_data$Year <= input$range[2],)
+})
             

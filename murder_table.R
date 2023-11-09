@@ -1,10 +1,7 @@
 ##Calling initial data set
 murder_table <- readRDS("murders.RData")
 
-##Filtering data set for slider
-filteredData <- reactive({
-  murder_table[murder_table$Year >= input$range[1] & murder_table$Year <= input$range[2],]
-})
+
 
 ##Merging with geojson
 geo <- geojson_read("states.geo.json", 
