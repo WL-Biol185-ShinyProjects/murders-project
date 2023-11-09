@@ -20,21 +20,21 @@ source("state_function.R")
 qpal <- colorQuantile("Reds",
                 geo@data$total_murders,
                 n = 7)
-
-##Formatting text for popups 
-label_text <- glue(
-  "<b>State: </b> {geo@data$NAME}<br/>",
-  "<b>Total Murders: </b> {geo@data$total_murders}<br/>",
-  "<b>Victim Age: </b> {geo@data$Common_Victim_Age}<br/>", 
-  "<b>Victim Race: </b> {geo@data$Common_Victim_Race}<br/>",
-  "<b>Victim Sex: </b> {geo@data$Common_Victim_Sex}<br/>",
-  "<b>Relationship: </b> {geo@data$Common_Relationship}<br/>",
-  "<b>Weapon: </b> {geo@data$Common_Weapon}<br/>",
-  "<b>Perpetrator Age: </b> {geo@data$Common_Perpetrator_Age}<br/>",
-  "<b>Perpetrator Race: </b> {geo@data$Common_Perpetrator_Race}<br/>",
-  "<b>Perpetrator Sex: </b> {geo@data$Common_Perpetrator_Sex}<br/>"
-) %>%
-  lapply(htmltools::HTML)
+# 
+# ##Formatting text for popups 
+# label_text <- glue(
+#   "<b>State: </b> {geo@data$NAME}<br/>",
+#   "<b>Total Murders: </b> {geo@data$total_murders}<br/>",
+#   "<b>Victim Age: </b> {geo@data$Common_Victim_Age}<br/>", 
+#   "<b>Victim Race: </b> {geo@data$Common_Victim_Race}<br/>",
+#   "<b>Victim Sex: </b> {geo@data$Common_Victim_Sex}<br/>",
+#   "<b>Relationship: </b> {geo@data$Common_Relationship}<br/>",
+#   "<b>Weapon: </b> {geo@data$Common_Weapon}<br/>",
+#   "<b>Perpetrator Age: </b> {geo@data$Common_Perpetrator_Age}<br/>",
+#   "<b>Perpetrator Race: </b> {geo@data$Common_Perpetrator_Race}<br/>",
+#   "<b>Perpetrator Sex: </b> {geo@data$Common_Perpetrator_Sex}<br/>"
+# ) %>%
+#   lapply(htmltools::HTML)
 
 ##Drawing the map    
 ##Joining geojson data with statistical data
@@ -45,6 +45,7 @@ function(input, output, session) {
   output$StateMap <- renderLeaflet({
     ##Joining geojson data with statistical data
     (geo@data <- left_join(geo@data, filter(popup_data, Year == input$Year), by = c("NAME" = "State")))
+    print("leaflet") %>%
     (label_text <- glue(
       "<b>State: </b> {geo@data$NAME}<br/>",
       "<b>Total Murders: </b> {geo@data$total_murders}<br/>",
@@ -59,7 +60,6 @@ function(input, output, session) {
     ) %>%
         lapply(htmltools::HTML))
     leaflet(geo) %>%
-      print("leaflet") %>%
       setView(-96, 37.8, 4) %>%
     addPolygons(
       fillColor = ~qpal(total_murders),
@@ -77,16 +77,16 @@ function(input, output, session) {
               pal = qpal, 
               values = ~total_murders)
      })
-  observe({
-  leafletProxy("StateMap", data = murder_table)%>% 
-    addMarkers(lng = geo@data$longitude,
-               lat = geo@data$latitude,
-               popup = ~label_text) %>%
-    addLegend("bottomright",
-              pal = qpal,
-              values = ~total_murders) %>% 
-      fitBounds(~min(geo@data$longitude), ~min(geo@data$latitude), ~max(geo@data$longitude), ~max(geo@data$latitude))
-  })
+  # observe({
+  # leafletProxy("StateMap", data = popup_data)%>% 
+  #   addMarkers(lng = geo@data$longitude,
+  #              lat = geo@data$latitude,
+  #              popup = ~label_text) %>%
+  #   addLegend("bottomright",
+  #             pal = qpal,
+  #             values = ~total_murders) %>% 
+  #     fitBounds(~min(geo@data$longitude), ~min(geo@data$latitude), ~max(geo@data$longitude), ~max(geo@data$latitude))
+  # })
   observe({
     geo@data <- left_join(originalData, filter(popup_data, Year == input$Year))
     leafletProxy(data= geo) %>%
