@@ -45,7 +45,6 @@ function(input, output, session) {
   output$StateMap <- renderLeaflet({
     ##Joining geojson data with statistical data
     (geo@data <- left_join(geo@data, filter(popup_data, Year == input$Year), by = c("NAME" = "State")))
-    print("leaflet") %>%
     (label_text <- glue(
       "<b>State: </b> {geo@data$NAME}<br/>",
       "<b>Total Murders: </b> {geo@data$total_murders}<br/>",
