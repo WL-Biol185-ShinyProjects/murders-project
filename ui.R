@@ -6,8 +6,8 @@ murder_table <- readRDS("murders.RData")
 
 bootstrapPage(
   titlePanel("State Map"), 
-  mainPanel(leafletOutput(outputId = "StateMap"),
-            sliderInput("range","Year",min(murder_table$'Year'),max(murder_table$'Year'), value = range(murder_table$'Year'), step = 1),
+  mainPanel(leafletOutput("StateMap"),
+            sliderInput("range","Year",min(popup_data$Year),max(popup_data$Year), value = range(popup_data$Year), step = 1),
             checkboxInput("legend", "Show legend", TRUE))
   )
 #Creates a map

@@ -43,8 +43,9 @@ originalData <- geo@data
 
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
+    # print("after left join")
     ##Joining geojson data with statistical data
-    (geo@data <- left_join(geo@data, filter(popup_data, Year == input$Year), by = c("NAME" = "State")))
+    (geo@data <- left_join(geo@data, filter(popup_data, input$range[1] >= Year, input$range[2] <= Year), by = c("NAME" = "State")))
     (label_text <- glue(
       "<b>State: </b> {geo@data$NAME}<br/>",
       "<b>Total Murders: </b> {geo@data$total_murders}<br/>",
@@ -68,10 +69,9 @@ function(input, output, session) {
       dashArray = "3",
       smoothFactor = 0.2,
       fillOpacity = 0.7) %>%
-    addMarkers(lng = geo@data$lon, 
-               lat = geo@data$lat, 
-               popup = label_text,
-               NULL = FALSE) %>%
+    addMarkers(lng = geo@data$longitude, 
+               lat = geo@data$latitude,
+               popup = label_text) %>%
     addLegend("bottomright", 
               pal = qpal, 
               values = ~total_murders)
@@ -87,8 +87,8 @@ function(input, output, session) {
   #     fitBounds(~min(geo@data$longitude), ~min(geo@data$latitude), ~max(geo@data$longitude), ~max(geo@data$latitude))
   # })
   observe({
-    geo@data <- left_join(originalData, filter(popup_data, Year == input$Year))
-    leafletProxy(data= geo) %>%
+    geo@data <- left_join(originalData, filter(popup_data, input$range[1] >= Year, input$range[2] <= Year), by = c("NAME" = "State"))
+    output$StateMap <- leafletProxy("StateMap", popup_data) %>%
       # ("StateMap", data = filteredData()) %>%
       clearShapes() %>%
       clearPopups() %>%
@@ -107,7 +107,7 @@ function(input, output, session) {
       # ) %>%
       #   lapply(htmltools::HTML))
       addMarkers(lng = popup_data$longitude,
-                 lat = popup_data$latitude,
+                 lat = popup_data$latitude
                  # popup = label_text
                  )
     
