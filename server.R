@@ -20,7 +20,8 @@ qpal <- colorQuantile("Reds",
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
     ##Joining geojson data with statistical data
-    (geo@data <- left_join(geo@data, popup_data, by = c("NAME" = "State")))
+    geo@data<-(left_join( geo@data, popup_data, by = c("NAME" = "State"
+                                                      )))
     (label_text <- glue(
       "<b>State: </b> {geo@data$NAME}<br/>",
       "<b>Total Murders: </b> {geo@data$total_murders}<br/>",
@@ -56,8 +57,7 @@ function(input, output, session) {
   observe({
     input_data <- filter(popup_data, input$range[1] >= Year & input$range[2] <= Year)
     geo@data <- left_join(original_data, input_data, by = c("NAME" = "State"))
-    leafletProxy("StateMap", session)
-      (label_text <- glue(
+    label_text <- glue(
         "<b>State: </b> {input_data$NAME}<br/>",
         "<b>Total Murders: </b> {input_data$total_murders}<br/>",
         "<b>Victim Age: </b> {input_data$Common_Victim_Age}<br/>",
@@ -68,12 +68,14 @@ function(input, output, session) {
         "<b>Perpetrator Age: </b> {input_data$Common_Perpetrator_Age}<br/>"
         # "<b>Perpetrator Race: </b> {filteredData$Common_Perpetrator_Race}<br/>",
         # "<b>Perpetrator Sex: </b> {filteredData$Common_Perpetrator_Sex}<br/>"
-      )
       %>%
-        lapply(htmltools::HTML))
-      # addMarkers("StateMap",
-      #            lng = input_data$longitude,
-      #            lat = input_data$latitude,
-      #           popup = label_text)
+      lapply(htmltools::HTML)
+      )
+    leafletProxy("StateMap", session)%>%
+      clearMarkers() %>%
+      addMarkers("StateMap",
+                 lng = input_data$longitude,
+                 lat = input_data$latitude,
+                 popup = label_text)
   })
 }
