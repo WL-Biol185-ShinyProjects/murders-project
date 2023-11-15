@@ -1,5 +1,4 @@
 library(ggplot2)
-
-
-ggplot(Alabama, aes(Perpetrator.Age)) + 
-  geom_histogram()
+murders %>%
+  group_by(State) %>%
+  ggplot(aes(State, Incident)) + geom_bar(stat = 'identity')
