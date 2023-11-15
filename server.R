@@ -9,7 +9,7 @@ library(glue)
 ##Calling initial data and filtering data
 source("murder_table.R")
 
-##Calling coordinate data
+##Calling coordinate da?clearta
 source("coordinates.R")
 
 ##Calling state_function to summarize statistics for each state into the most common aspects of crimes 
