@@ -55,7 +55,7 @@ function(input, output, session) {
      })
   
   observe({
-    input_data <- filter(popup_data, input$range = "Year")
+    input_data <- filter(popup_data, input$range = ~Year)
     geo@data <- left_join(original_data, input_data, by = c("NAME" = "State"))
     label_text <- glue(
         "<b>State: </b> {input_data$NAME}<br/>",
