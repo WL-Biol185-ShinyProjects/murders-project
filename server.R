@@ -20,14 +20,12 @@ qpal <- colorQuantile("Reds",
                 geo@data$total_murders,
                 n = 7)
 
-##Formatting text for popups 
-
-
 ##Drawing the map
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
     ##Joining geojson data with statistical data
     (geo@data <- left_join(geo@data,popup_data, by = c("NAME" = "State")))
+    ##Formatting text for popups 
     (label_text <- glue(
       "<b>State: </b> {geo@data$NAME}<br/>",
       "<b>Total Murders: </b> {geo@data$total_murders}<br/>",
@@ -49,7 +47,7 @@ function(input, output, session) {
       opacity = 1,
       color = "white",
       dashArray = "3",
-      fillOpacity = 0.7) 
+      fillOpacity = 0.7) %>%
     addMarkers(lng = geo@data$longitude, 
                lat = geo@data$latitude, 
                popup = label_text) %>%
