@@ -72,10 +72,10 @@ function(input, output, session) {
       lapply(htmltools::HTML)
       )
     leafletProxy("StateMap", session)%>%
-      clearMarkers() %>%
-      addMarkers("StateMap",
-                 lng = input_data$longitude,
-                 lat = input_data$latitude,
-                 popup = label_text)
+    clearMarkers() %>%
+    addMarkers("StateMap",
+               lng = input_data$longitude,
+               lat = input_data$latitude,
+               popup = label_text)
   })
 }
