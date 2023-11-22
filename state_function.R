@@ -4,6 +4,14 @@ library(geojsonio)
 library(tidyverse)
 library(dplyr)
 
+##proxy distinguished data
+original_data <-geo@data
+
+##Adding coordinates to data set
+Coordinates <- read.csv("us-state-capitals.csv")
+Coordinates$description <- NULL
+
+#summarizing data into new column
 popup_totalmurders <- murder_table %>%
   group_by(State, Year) %>%
   mutate(total_murders = n())
@@ -20,10 +28,9 @@ popup_table <- popup_totalmurders %>%
             # Common_Perpetrator_Race = names(which.max(table(murder_table$Perpetrator.Race))),
             # Common_Perpetrator_Sex = names(which.max(table(murder_table$Perpetrator.Sex))))
 
-
 ##Joining coordinate and popup data
-Coordinates$description <- NULL
 popup_data <- left_join(popup_table, Coordinates, c("State" = "name"))
+
 
 ##Filtering data set for slider
 # filteredData <- reactive({
