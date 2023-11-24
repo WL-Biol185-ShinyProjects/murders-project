@@ -42,7 +42,7 @@ function(input, output, session) {
     leaflet(geo) %>%
       setView(-96, 37.8, 4) %>%
     addPolygons(
-      fillColor = ~qpal(total_murders),
+      fillColor = ~qpal(popup_data$total_murders),
       weight = 2,
       opacity = 1,
       color = "white",
@@ -54,7 +54,7 @@ function(input, output, session) {
                popup = label_text) %>%
     addLegend("bottomright", 
               pal = qpal, 
-              values = ~total_murders)
+              values = ~popup_data$total_murders)
      })
   
   observe({
@@ -66,7 +66,7 @@ function(input, output, session) {
     #              lat = popup_data$latitude
     #              # popup = label_text
     #              )
-    input_data <- filter(popup_data, input$range == "Year")
+    input_data <- filter(popup_data, Year >= input$range[1] & Year <= input$range[2])
     geo@data <- left_join(original_data, input_data, by = c("NAME" = "State"))
     label_text <- glue(
         "<b>State: </b> {input_data$NAME}<br/>",
@@ -84,9 +84,9 @@ function(input, output, session) {
       )
     output$StateMap <- leafletProxy("StateMap", session) %>%
     clearMarkers() %>%
-    addMarkers("StateMap",
-               lng = input_data$longitude,
+    addMarkers(lng = input_data$longitude,
                lat = input_data$latitude,
-               popup = label_text)
+               popup = paste("Total Murders:", input_data$total_murders)
+    )
   })
 }

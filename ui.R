@@ -11,9 +11,9 @@ source("murder_table.R")
 ##Calling state_function to summarize statistics for each state into the most common aspects of crimes 
 source("state_function.R")
 
-bootstrapPage(
+fluidPage(
   titlePanel("State Map"), 
   mainPanel(leafletOutput("StateMap"),
-            sliderInput("range","Year", min=1980, max=2014, value = 1980, step = 1),
+            sliderInput("range","Year", min=1980, max=2014, value = c(1980,2014), step = 1),
             checkboxInput("legend", "Show legend", TRUE))
   )
