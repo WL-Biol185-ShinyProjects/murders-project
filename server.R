@@ -17,14 +17,18 @@ source("state_function.R")
 
 ##Defining palette
 qpal <- colorQuantile("Reds",
-                geo@data$total_murders,
+                geo@data$CENSUSAREA,
                 n = 7)
+#changed from murder_table to CENSUSAREA line 16 after $
+#got an error of "memory allocation error"... memory.limit(100) possible fix ***ASK Whitworth 
 
 ##Drawing the map   
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
     ##Joining geojson data with statistical data
-    (geo@data <- left_join(geo@data, popup_data, by = c("NAME" = "State")))
+    (geo@data <- left_join(geo@data, filter(popup_data, input$range[1] >= Year & input$range[2] <= Year), by = c("NAME" = "State")))
+    geo@data<-(left_join( geo@data, popup_data, by = c("NAME" = "State"
+                                                      )))
     (label_text <- glue(
       "<b>State: </b> {geo@data$NAME}<br/>",
       "<b>Total Murders: </b> {geo@data$total_murders}<br/>",
@@ -42,7 +46,7 @@ function(input, output, session) {
     leaflet(geo) %>%
       setView(-96, 37.8, 4) %>%
     addPolygons(
-      fillColor = ~qpal(total_murders),
+      fillColor = ~qpal(popup_data$total_murders),
       weight = 2,
       opacity = 1,
       color = "white",
@@ -54,14 +58,21 @@ function(input, output, session) {
                popup = label_text) %>%
     addLegend("bottomright", 
               pal = qpal, 
-              values = ~total_murders)
+              values = ~popup_data$total_murders)
      })
   
   observe({
-    input_data <- filter(popup_data, input$range[1] >= Year & input$range[2] <= Year)
+    # geo@data <- left_join(originalData, filter(popup_data, input$range[1] >= Year & input$range[2] <= Year), by = c("NAME" = "State"))
+    # output$StateMap <- leafletProxy("StateMap", popup_data) %>%
+    #   clearMarkers() %>%
+    #   clearPopups() %>%
+    #   addMarkers(lng = popup_data$longitude,
+    #              lat = popup_data$latitude
+    #              # popup = label_text
+    #              )
+    input_data <- filter(popup_data, Year >= input$range[1] & Year <= input$range[2])
     geo@data <- left_join(original_data, input_data, by = c("NAME" = "State"))
-    leafletProxy("StateMap", session)
-      (label_text <- glue(
+    label_text <- glue(
         "<b>State: </b> {input_data$NAME}<br/>",
         "<b>Total Murders: </b> {input_data$total_murders}<br/>",
         "<b>Victim Age: </b> {input_data$Common_Victim_Age}<br/>",
@@ -72,12 +83,14 @@ function(input, output, session) {
         "<b>Perpetrator Age: </b> {input_data$Common_Perpetrator_Age}<br/>"
         # "<b>Perpetrator Race: </b> {filteredData$Common_Perpetrator_Race}<br/>",
         # "<b>Perpetrator Sex: </b> {filteredData$Common_Perpetrator_Sex}<br/>"
-      )
       %>%
-        lapply(htmltools::HTML))
-      # addMarkers("StateMap",
-      #            lng = input_data$longitude,
-      #            lat = input_data$latitude,
-      #           popup = label_text)
+      lapply(htmltools::HTML)
+      )
+    output$StateMap <- leafletProxy("StateMap", session) %>%
+    clearMarkers() %>%
+    addMarkers(lng = input_data$longitude,
+               lat = input_data$latitude,
+               popup = paste("Total Murders:", input_data$total_murders)
+    )
   })
 }
