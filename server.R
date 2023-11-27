@@ -15,6 +15,8 @@ source("coordinates.R")
 ##Calling state_function to summarize statistics for each state into the most common aspects of crimes 
 source("state_function.R")
 
+source("ggplots.R")
+
 ##Defining palette
 qpal <- colorQuantile("Reds",
                 popup_data$total_murders,
@@ -61,15 +63,18 @@ function(input, output, session) {
               values = ~popup_data$total_murders)
      })
   
+
+  output$scatterplot <- renderPlot({
+    ggplot(murderbargraph, aes_string(input$State, input$Month)) + geom_point(stat = "identity")
+  })
+    
+  output$racepiechart <- renderPlot({
+    ggplot(victimrace, aes(x = "", y = victimrace$n, fill = victimrace$Victim.Race)) + 
+      geom_bar(stat = "identity", width =1, color = "black") +
+      coord_polar("y", start = 0) + theme_void()
+  })
+  
   observe({
-    # geo@data <- left_join(originalData, filter(popup_data, input$range[1] >= Year & input$range[2] <= Year), by = c("NAME" = "State"))
-    # output$StateMap <- leafletProxy("StateMap", popup_data) %>%
-    #   clearMarkers() %>%
-    #   clearPopups() %>%
-    #   addMarkers(lng = popup_data$longitude,
-    #              lat = popup_data$latitude
-    #              # popup = label_text
-    #              )
     input_data <- filter(popup_data, input$range == Year)
     geo@data <- left_join(original_data, input_data, by = c("NAME" = "State"))
     label_text <- glue(
