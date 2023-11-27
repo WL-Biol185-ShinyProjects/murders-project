@@ -17,7 +17,7 @@ source("state_function.R")
 
 ##Defining palette
 qpal <- colorQuantile("Reds",
-                geo@data$CENSUSAREA,
+                popup_data$total_murders,
                 n = 7)
 #changed from murder_table to CENSUSAREA line 16 after $
 #got an error of "memory allocation error"... memory.limit(100) possible fix ***ASK Whitworth 
@@ -26,7 +26,7 @@ qpal <- colorQuantile("Reds",
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
     ##Joining geojson data with statistical data
-    (geo@data <- left_join(geo@data, filter(popup_data, input$range[1] >= Year & input$range[2] <= Year), by = c("NAME" = "State")))
+    (geo@data <- left_join(geo@data, filter(popup_data, input$range == Year), by = c("NAME" = "State")))
     geo@data<-(left_join( geo@data, popup_data, by = c("NAME" = "State"
                                                       )))
     (label_text <- glue(
@@ -70,7 +70,7 @@ function(input, output, session) {
     #              lat = popup_data$latitude
     #              # popup = label_text
     #              )
-    input_data <- filter(popup_data, Year >= input$range[1] & Year <= input$range[2])
+    input_data <- filter(popup_data, input$range == Year)
     geo@data <- left_join(original_data, input_data, by = c("NAME" = "State"))
     label_text <- glue(
         "<b>State: </b> {input_data$NAME}<br/>",
@@ -86,7 +86,7 @@ function(input, output, session) {
       %>%
       lapply(htmltools::HTML)
       )
-    output$StateMap <- leafletProxy("StateMap", session) %>%
+    leafletProxy("StateMap", session) %>%
     clearMarkers() %>%
     addMarkers(lng = input_data$longitude,
                lat = input_data$latitude,
