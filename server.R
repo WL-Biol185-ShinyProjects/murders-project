@@ -17,8 +17,6 @@ source("ggplots.R")
 qpal <- colorQuantile("Reds",
                 popup_data$total_murders,
                 n = 7)
-#changed from murder_table to CENSUSAREA line 16 after $
-#got an error of "memory allocation error"... memory.limit(100) possible fix ***ASK Whitworth 
 
 ##Drawing the map   
 function(input, output, session) {
