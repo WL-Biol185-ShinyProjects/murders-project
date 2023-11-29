@@ -20,8 +20,10 @@ navbarPage(titlePanel("Murder Rates by State"),
                     mainPanel(leafletOutput("StateMap"),
                               sliderInput("range","Year", min=1980, max=2014, value = 1980, step = 1),
                               checkboxInput("legend", "Show legend", TRUE))),
-           tabPanel("Graphs", plotOutput("scatterplot"), 
-                    selectInput("Month", "Choose a Month", choices = unique(murderbargraph$Month)), 
-                    selectInput("State", "Choose a State", choices = unique(murderbargraph$State))),
+           tabPanel("Murder Incidence by State and Year", plotOutput("barplot"), 
+                    selectInput("Year", "Year", choices = unique(murderbargraph2$Year)), 
+                    selectInput("State", "State", choices = unique(murderbargraph2$State))),
+           tabPanel("Weapon Pie Graph", plotOutput("weaponpiechart")),
+           tabPanel("Murder Incidence Through the Years", plotOutput("scatterplot")),
            tabPanel("Race Pie Graph", plotOutput("racepiechart"))
            )
