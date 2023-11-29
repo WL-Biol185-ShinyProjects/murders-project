@@ -25,5 +25,5 @@ navbarPage(titlePanel("Murder Rates by State"),
                     selectInput("State", "State", choices = unique(murderbargraph2$State))),
            tabPanel("Weapon Pie Graph", plotOutput("weaponpiechart")),
            tabPanel("Murder Incidence Through the Years", plotOutput("scatterplot")),
-           tabPanel("Race Pie Graph", plotOutput("racepiechart"))
+           tabPanel("Race Pie Graph", splitLayout(plotOutput("racepiechart"), plotOutput("perpracepiechart")))
            )

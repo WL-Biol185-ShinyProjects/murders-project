@@ -38,6 +38,8 @@ murderline <- murder_table %>%
 victimrace <- murder_table %>%
   count(Victim.Race)
 
+perprace <- murder_table %>%
+  count(Perpetrator.Race)
 
   # ggplot(victimrace, aes(x = "", y = victimrace$n, fill = victimrace$Victim.Race)) + 
   #   geom_bar(stat = "identity", width =1, color = "black") +

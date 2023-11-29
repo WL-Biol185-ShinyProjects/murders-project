@@ -85,8 +85,14 @@ function(input, output, session) {
     
   output$racepiechart <- renderPlot({
     ggplot(victimrace, aes(x = "", y = victimrace$n, fill = victimrace$Victim.Race)) + 
-      geom_bar(stat = "identity", width =1, color = "black") +
+      geom_bar(stat = "identity", width =1, color = "black", alpha=0.7) +
       coord_polar("y", start = 0) + theme_void() + scale_fill_discrete(name="Victim Race")
+  })
+  
+  output$perpracepiechart <- renderPlot({
+    ggplot(perprace, aes(x = "", y = perprace$n, fill = perprace$Perpetrator.Race)) +
+      geom_bar(stat = "identity", width =1, color = "black", alpha=0.7) +
+      coord_polar("y", start = 0) + theme_void() + scale_fill_discrete(name="Perpetrator Race")  
   })
   
   output$weaponpiechart <- renderPlot({
