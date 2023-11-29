@@ -71,9 +71,10 @@ function(input, output, session) {
       })
 
   
-    output$barplot <- renderPlot({    
-      ggplot(murderbargraph2, aes(x = Month, y = monthly_murders, fill = Month)) + 
-      geom_bar(stat = 'identity', alpha=0.5) + 
+    output$barplot <- renderPlot({
+      input_bargraph <- filter(murderbargraph2, input$Year == Year, input$State == State)
+      ggplot(input_bargraph, aes(x = Month, y = monthly_murders, fill = Month)) + 
+      geom_bar(stat = 'identity', alpha=0.8) + 
       ylab("Murder Incidence") +
       xlab("Month") + 
       ggtitle("Murder Incidence by State and Year")
@@ -136,10 +137,6 @@ function(input, output, session) {
     )
   })
   
-  
-  # observe({
-  #   input_bargraph <- filter(murderbargraph2, input$Year == Year, input$State == State)
-    
-  })
+
 }
 
