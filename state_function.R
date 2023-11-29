@@ -46,6 +46,7 @@ common_table_perpetrator_sex <- murder_table %>%
   count(Perpetrator.Sex)%>%
   arrange(desc(n))
 
+#assigning common values
 Common_Victim_Race <- common_table_victim_race[1, "Victim.Race"]
 Common_Victim_Sex <- common_table_victim_sex[1, "Victim.Sex"]
 Common_Weapon  <- common_table_weapon[1, "Weapon"]

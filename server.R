@@ -21,8 +21,6 @@ source("ggplots.R")
 qpal <- colorQuantile("Reds",
                 popup_data$total_murders,
                 n = 7)
-#changed from murder_table to CENSUSAREA line 16 after $
-#got an error of "memory allocation error"... memory.limit(100) possible fix ***ASK Whitworth 
 
 ##Drawing the map   
 function(input, output, session) {
@@ -63,14 +61,57 @@ function(input, output, session) {
               values = ~popup_data$total_murders)
      })
   
+
   output$scatterplot <- renderPlot({
-    ggplot(murderbargraph, aes_string(input$Month, input$State)) + geom_point(stat = "identity")
+    ggplot(murderline, aes(x= Year, y = total_murders)) + 
+      geom_point(shape=24, fill = "darkturquoise", color = "darkturquoise", size=3) +
+      geom_smooth(method=lm, color = "red") +
+      scale_x_continuous(breaks = c(1980, 1985, 1990, 1995, 2000, 2005, 2010)) +
+      ylab("Murder Incidence") +
+      xlab("Year") +
+      ggtitle("Murder Incidence Through the Years")
+      })
+
+  
+    output$barplot <- renderPlot({
+      input_bargraph <- filter(murderbargraph2, input$Year == Year, input$State == State)
+      ggplot(input_bargraph, aes(x = Month, y = monthly_murders, fill = Month)) + 
+      geom_bar(stat = 'identity', alpha=0.8) + 
+      ylab("Murder Incidence") +
+      xlab("Month") + 
+      ggtitle("Murder Incidence by State and Year")
   })
+  
     
   output$racepiechart <- renderPlot({
     ggplot(victimrace, aes(x = "", y = victimrace$n, fill = victimrace$Victim.Race)) + 
       geom_bar(stat = "identity", width =1, color = "black") +
       coord_polar("y", start = 0) + theme_void() + scale_fill_discrete(name="Victim Race")
+  })
+  
+  output$weaponpiechart <- renderPlot({
+    ggplot(common_table_weapon, aes(x = "", y = common_table_weapon$n, fill = common_table_weapon$Weapon)) + 
+      geom_bar(stat = "identity", width =1, color = "black", alpha=0.7) +
+      coord_polar("y", start = 0) + theme_void() + 
+      scale_fill_manual("Weapon Type", values = c("Handgun" = "deeppink", 
+                                             "Knife" = "brown", 
+                                             "Blunt Object" = "red",
+                                             "Firearm" = "blueviolet", 
+                                             "Unknown" = "darksalmon", 
+                                             "Shotgun" = "darkmagenta",
+                                             "Rifle" = "darkolivegreen1",
+                                             "Strangulation" = "darkgoldenrod1",
+                                             "Fire" = "darkgreen",
+                                             "Suffocation" = "deepskyblue",
+                                             "Gun" = "cadetblue1", 
+                                             "Drugs" = "cornsilk",
+                                             "Drowning" = "green", 
+                                             "Explosives" = "pink",
+                                             "Poison" = "coral1",
+                                             "Fall" = "yellow"
+                                             
+      ))
+    
   })
   
   observe({
@@ -97,5 +138,7 @@ function(input, output, session) {
                popup = paste(label_text)
     )
   })
+  
+
 }
 
