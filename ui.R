@@ -14,13 +14,6 @@ source("state_function.R")
 
 source("ggplots.R")
 
-# fluidPage(
-#   titlePanel("State Map"), 
-#   mainPanel(leafletOutput("StateMap"),
-#             sliderInput("range","Year", min=1980, max=2014, value = c(1980,2014), step = 1),
-#             checkboxInput("legend", "Show legend", TRUE))
-#   )
-
 navbarPage(titlePanel("Murder Rates by State"),
            tabPanel("Map",
                     tags$h2("This map summarizes data of US murder rates by state across selected years from 1980 to 2010"), 

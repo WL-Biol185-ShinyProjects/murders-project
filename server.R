@@ -32,16 +32,16 @@ function(input, output, session) {
     geo@data<-(left_join( geo@data, popup_data, by = c("NAME" = "State"
                                                       )))
     (label_text <- glue(
-      "<b>State: </b> {geo@data$NAME}<br/>",
-      "<b>Total Murders: </b> {geo@data$total_murders}<br/>",
-      "<b>Victim Age: </b> {geo@data$Common_Victim_Age}<br/>", 
-      # "<b>Victim Race: </b> {geo@data$Common_Victim_Race}<br/>",
-      # "<b>Victim Sex: </b> {geo@data$Common_Victim_Sex}<br/>",
-      # "<b>Relationship: </b> {geo@data$Common_Relationship}<br/>",
-      # "<b>Weapon: </b> {geo@data$Common_Weapon}<br/>",
-      "<b>Perpetrator Age: </b> {geo@data$Common_Perpetrator_Age}<br/>"
-      # "<b>Perpetrator Race: </b> {geo@data$Common_Perpetrator_Race}<br/>",
-      # "<b>Perpetrator Sex: </b> {geo@data$Common_Perpetrator_Sex}<br/>"
+      "<b>State: </b> {popup_data$State}<br/>",
+      "<b>Total Murders: </b> {popup_data$total_murders}<br/>",
+      "<b>Victim Age: </b> {popup_data$Common_Victim_Age}<br/>",
+      "<b>Victim Race: </b> {Common_Victim_Race}<br/>",
+      "<b>Victim Sex: </b> {Common_Victim_Sex}<br/>",
+      "<b>Relationship: </b> {Common_Relationship}<br/>",
+      "<b>Weapon: </b> {Common_Weapon}<br/>",
+      "<b>Perpetrator Age: </b> {popup_data$Common_Perpetrator_Age}<br/>",
+      "<b>Perpetrator Race: </b> {Common_Perpetrator_Race}<br/>",
+      "<b>Perpetrator Sex: </b> {Common_Perpetrator_Sex}<br/>"
     ) %>%
         lapply(htmltools::HTML))
     
@@ -63,31 +63,30 @@ function(input, output, session) {
               values = ~popup_data$total_murders)
      })
   
-
   output$scatterplot <- renderPlot({
-    ggplot(murderbargraph, aes_string(input$State, input$Month)) + geom_point(stat = "identity")
+    ggplot(murderbargraph, aes_string(input$Month, input$State)) + geom_point(stat = "identity")
   })
     
   output$racepiechart <- renderPlot({
     ggplot(victimrace, aes(x = "", y = victimrace$n, fill = victimrace$Victim.Race)) + 
       geom_bar(stat = "identity", width =1, color = "black") +
-      coord_polar("y", start = 0) + theme_void()
+      coord_polar("y", start = 0) + theme_void() + scale_fill_discrete(name="Victim Race")
   })
   
   observe({
     input_data <- filter(popup_data, input$range == Year)
     geo@data <- left_join(original_data, input_data, by = c("NAME" = "State"))
     label_text <- glue(
-        "<b>State: </b> {input_data$NAME}<br/>",
+        "<b>State: </b> {input_data$State}<br/>",
         "<b>Total Murders: </b> {input_data$total_murders}<br/>",
         "<b>Victim Age: </b> {input_data$Common_Victim_Age}<br/>",
-        # "<b>Victim Race: </b> {filteredData$Common_Victim_Race}<br/>",
-        # "<b>Victim Sex: </b> {filteredData$Common_Victim_Sex}<br/>",
-        # "<b>Relationship: </b> {filteredData$Common_Relationship}<br/>",
-        # "<b>Weapon: </b> {filteredData$Common_Weapon}<br/>",
-        "<b>Perpetrator Age: </b> {input_data$Common_Perpetrator_Age}<br/>"
-        # "<b>Perpetrator Race: </b> {filteredData$Common_Perpetrator_Race}<br/>",
-        # "<b>Perpetrator Sex: </b> {filteredData$Common_Perpetrator_Sex}<br/>"
+        "<b>Victim Race: </b> {Common_Victim_Race}<br/>",
+         "<b>Victim Sex: </b> {Common_Victim_Sex}<br/>",
+        "<b>Relationship: </b> {Common_Relationship}<br/>",
+        "<b>Weapon: </b> {Common_Weapon}<br/>",
+         "<b>Perpetrator Age: </b> {input_data$Common_Perpetrator_Age}<br/>",
+          "<b>Perpetrator Race: </b> {Common_Perpetrator_Race}<br/>",
+          "<b>Perpetrator Sex: </b> {Common_Perpetrator_Sex}<br/>"
       %>%
       lapply(htmltools::HTML)
       )
@@ -95,7 +94,8 @@ function(input, output, session) {
     clearMarkers() %>%
     addMarkers(lng = input_data$longitude,
                lat = input_data$latitude,
-               popup = paste("Total Murders:", input_data$total_murders)
+               popup = paste(label_text)
     )
   })
 }
+
