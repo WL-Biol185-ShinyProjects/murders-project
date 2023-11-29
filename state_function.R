@@ -16,17 +16,43 @@ popup_totalmurders <- murder_table %>%
   group_by(State, Year) %>%
   mutate(total_murders = n())
 
+##finding common value
+common_table_victim_race <- murder_table %>%
+  count(Victim.Race)%>%
+  arrange(desc(n))
+
+common_table_victim_sex <- murder_table %>%
+  count(Victim.Sex)%>%
+  arrange(desc(n))
+
+common_table_weapon <- murder_table %>%
+  count(Weapon)%>%
+  arrange(desc(n))
+
+common_table_relationship <- murder_table %>%
+  count(Relationship)%>%
+  arrange(desc(n))
+
+common_table_perpetrator_race <- murder_table %>%
+  count(Perpetrator.Race)%>%
+  arrange(desc(n))
+
+common_table_perpetrator_sex <- murder_table %>%
+  count(Perpetrator.Sex)%>%
+  arrange(desc(n))
+
+Common_Victim_Race <- common_table_victim_race[1, "Victim.Race"]
+Common_Victim_Sex <- common_table_victim_sex[1, "Victim.Sex"]
+Common_Weapon  <- common_table_weapon[1, "Weapon"]
+Common_Relationship  <- common_table_relationship[1, "Relationship"]
+Common_Perpetrator_Race  <- common_table_perpetrator_race[1, "Perpetrator.Race"]
+Common_Perpetrator_Sex  <- common_table_perpetrator_sex[1, "Perpetrator.Sex"]
+
 ##Making a table that consolidates most common features for each state, and rounding mean age values
 popup_table <- popup_totalmurders %>%
   group_by(State, Year, total_murders) %>%
   summarise(Common_Victim_Age = round(mean(Victim.Age), 1),
-            # Common_Victim_Race = names(which.max(table(murder_table$Victim.Race))),
-            # Common_Victim_Sex = names(which.max(table(murder_table$Victim.Sex))),
-            # Common_Weapon = names(which.max(table(murder_table$Weapon))),
-            # Common_Relationship = names(which.max(table(murder_table$Relationship))),
             Common_Perpetrator_Age = round(mean(Perpetrator.Age),1))
-            # Common_Perpetrator_Race = names(which.max(table(murder_table$Perpetrator.Race))),
-            # Common_Perpetrator_Sex = names(which.max(table(murder_table$Perpetrator.Sex))))
 
 ##Joining coordinate and popup data
 popup_data <- left_join(popup_table, Coordinates, c("State" = "name"))
