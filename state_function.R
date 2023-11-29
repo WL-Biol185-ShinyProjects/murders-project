@@ -18,10 +18,12 @@ popup_totalmurders <- murder_table %>%
 
 ##finding common value
 common_table_victim_race <- murder_table %>%
+  group_by(Year)%>%
   count(Victim.Race)%>%
   arrange(desc(n))
 
 common_table_victim_sex <- murder_table %>%
+  group_by(Year)%>%
   count(Victim.Sex)%>%
   arrange(desc(n))
 
@@ -30,14 +32,17 @@ common_table_weapon <- murder_table %>%
   arrange(desc(n))
 
 common_table_relationship <- murder_table %>%
+  group_by(Year)%>%
   count(Relationship)%>%
   arrange(desc(n))
 
 common_table_perpetrator_race <- murder_table %>%
+  group_by(Year)%>%
   count(Perpetrator.Race)%>%
   arrange(desc(n))
 
 common_table_perpetrator_sex <- murder_table %>%
+  group_by(Year)%>%
   count(Perpetrator.Sex)%>%
   arrange(desc(n))
 
@@ -58,7 +63,4 @@ popup_table <- popup_totalmurders %>%
 popup_data <- left_join(popup_table, Coordinates, c("State" = "name"))
 
 
-##Filtering data set for slider
-# filteredData <- reactive({
-#   popup_data(popup_data$Year >= input$range[1] & popup_data$Year <= input$range[2],)
-# })
+

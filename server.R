@@ -28,7 +28,7 @@ function(input, output, session) {
     geo@data<-(left_join( geo@data, popup_data, by = c("NAME" = "State"
                                                       )))
     (label_text <- glue(
-      "<b>State: </b> {popup_data$NAME}<br/>",
+      "<b>State: </b> {popup_data$State}<br/>",
       "<b>Total Murders: </b> {popup_data$total_murders}<br/>",
       "<b>Victim Age: </b> {popup_data$Common_Victim_Age}<br/>",
       "<b>Victim Race: </b> {Common_Victim_Race}<br/>",
@@ -73,16 +73,16 @@ function(input, output, session) {
     input_data <- filter(popup_data, input$range == Year)
     geo@data <- left_join(original_data, input_data, by = c("NAME" = "State"))
     label_text <- glue(
-        "<b>State: </b> {input_data$NAME}<br/>",
+        "<b>State: </b> {input_data$State}<br/>",
         "<b>Total Murders: </b> {input_data$total_murders}<br/>",
         "<b>Victim Age: </b> {input_data$Common_Victim_Age}<br/>",
         "<b>Victim Race: </b> {Common_Victim_Race}<br/>",
          "<b>Victim Sex: </b> {Common_Victim_Sex}<br/>",
         "<b>Relationship: </b> {Common_Relationship}<br/>",
         "<b>Weapon: </b> {Common_Weapon}<br/>",
-        "<b>Perpetrator Age: </b> {input_data$Common_Perpetrator_Age}<br/>",
-       "<b>Perpetrator Race: </b> {Common_Perpetrator_Race}<br/>",
-        "<b>Perpetrator Sex: </b> {Common_Perpetrator_Sex}<br/>"
+         "<b>Perpetrator Age: </b> {input_data$Common_Perpetrator_Age}<br/>",
+          "<b>Perpetrator Race: </b> {Common_Perpetrator_Race}<br/>",
+          "<b>Perpetrator Sex: </b> {Common_Perpetrator_Sex}<br/>"
       %>%
       lapply(htmltools::HTML)
       )
@@ -90,7 +90,8 @@ function(input, output, session) {
     clearMarkers() %>%
     addMarkers(lng = input_data$longitude,
                lat = input_data$latitude,
-               popup = paste("Total Murders:", input_data$total_murders)
+               popup = paste(label_text)
     )
   })
 }
+
