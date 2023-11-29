@@ -59,15 +59,14 @@ function(input, output, session) {
               values = ~popup_data$total_murders)
      })
   
-
   output$scatterplot <- renderPlot({
-    ggplot(murderbargraph, aes_string(input$State, input$Month)) + geom_point(stat = "identity")
+    ggplot(murderbargraph, aes_string(input$Month, input$State)) + geom_point(stat = "identity")
   })
     
   output$racepiechart <- renderPlot({
     ggplot(victimrace, aes(x = "", y = victimrace$n, fill = victimrace$Victim.Race)) + 
       geom_bar(stat = "identity", width =1, color = "black") +
-      coord_polar("y", start = 0) + theme_void()
+      coord_polar("y", start = 0) + theme_void() + scale_fill_discrete(name="Victim Race")
   })
   
   observe({
