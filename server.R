@@ -123,6 +123,33 @@ function(input, output, session) {
     
   })
   
+  output$weaponpiechartinteractive <- renderPlot({
+    input_pieplot <- filter(common_weapon_year, input$Year == Year)
+    ggplot(input_pieplot, aes(x = "", y = n, fill = Weapon)) + 
+      geom_bar(stat = "identity", width =1, color = "black", alpha=0.7) +
+      coord_polar("y", start = 0) + theme_void() + 
+      scale_fill_manual("Weapon Type", values = c("Handgun" = "deeppink", 
+                                                  "Knife" = "brown", 
+                                                  "Blunt Object" = "red",
+                                                  "Firearm" = "blueviolet", 
+                                                  "Unknown" = "darksalmon", 
+                                                  "Shotgun" = "darkmagenta",
+                                                  "Rifle" = "darkolivegreen1",
+                                                  "Strangulation" = "darkgoldenrod1",
+                                                  "Fire" = "darkgreen",
+                                                  "Suffocation" = "deepskyblue",
+                                                  "Gun" = "cadetblue1", 
+                                                  "Drugs" = "cornsilk",
+                                                  "Drowning" = "green", 
+                                                  "Explosives" = "pink",
+                                                  "Poison" = "coral1",
+                                                  "Fall" = "yellow"
+                                                  
+      ))
+    
+  })
+
+  
   observe({
     input_data <- filter(popup_data, input$range == Year)
     geo@data <- left_join(original_data, input_data, by = c("NAME" = "State"))
