@@ -17,6 +17,12 @@ source("ggplots.R")
 
 navbarPage(title = "Murder Trends in the U.S. from 1980 to 2010",
            theme = shinythemes::shinytheme("sandstone"),
+           header = tags$style(HTML("
+                                    .leaflet-container {
+                                    background: #9a6666;
+                                    outline: 0;
+                                    }"
+                                    )),
            tags$style(type = "text/css", ".navbar-brand {font-size: 36px;}"),
            tabPanel("Map",
                     mainPanel(leafletOutput("StateMap", width = 900, height = 600),
