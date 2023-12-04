@@ -8,8 +8,9 @@ library(glue)
 ##Calling initial data and filtering data
 source("murder_table.R")
 
-##Calling coordinate da?clearta
+##Calling coordinate data
 source("coordinates.R")
+
 
 
 ##Calling state_function to summarize statistics for each state into the most common aspects of crimes 
@@ -38,8 +39,8 @@ function(input, output, session) {
       "<b>Relationship: </b> {Common_Relationship}<br/>",
       "<b>Weapon: </b> {Common_Weapon}<br/>",
       "<b>Perpetrator Age: </b> {popup_data$Common_Perpetrator_Age}<br/>",
-      "<b>Perpetrator Race: </b> {Common_Perpetrator_Race}<br/>",
-      "<b>Perpetrator Sex: </b> {Common_Perpetrator_Sex}<br/>"
+      "<b>Perpetrator Sex: </b> {Common_Perpetrator_Sex}<br/>",
+      "<b>Perpetrator Race: </b> {Common_Perpetrator_Race}<br/>"
     ) %>%
         lapply(htmltools::HTML))
     
@@ -66,7 +67,6 @@ function(input, output, session) {
   output$scatterplot <- renderPlot({
     ggplot(murderline, aes(x= Year, y = total_murders)) + 
       geom_point(shape=24, fill = "darkturquoise", color = "darkturquoise", size=3) +
-      geom_smooth(method=lm, color = "red") +
       scale_x_continuous(breaks = c(1980, 1985, 1990, 1995, 2000, 2005, 2010)) +
       ylab("Murder Incidence") +
       xlab("Year") +
@@ -135,8 +135,8 @@ function(input, output, session) {
         "<b>Relationship: </b> {Common_Relationship}<br/>",
         "<b>Weapon: </b> {Common_Weapon}<br/>",
          "<b>Perpetrator Age: </b> {input_data$Common_Perpetrator_Age}<br/>",
-          "<b>Perpetrator Race: </b> {Common_Perpetrator_Race}<br/>",
-          "<b>Perpetrator Sex: </b> {Common_Perpetrator_Sex}<br/>"
+        "<b>Perpetrator Sex: </b> {Common_Perpetrator_Sex}<br/>",
+          "<b>Perpetrator Race: </b> {Common_Perpetrator_Race}<br/>"
       %>%
       lapply(htmltools::HTML)
       )
