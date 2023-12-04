@@ -3,6 +3,7 @@ library(tidyverse)
 library(leaflet)
 library(stringr)
 library(geojsonio)
+library(DT)
 
 
 murder_table <- readRDS("murders.RData")
@@ -36,6 +37,7 @@ navbarPage(title = "Murder Trends in the U.S. from 1980 to 2010",
            tabPanel("Race Pie Graph",
                     splitLayout(plotOutput("racepiechart", width = 600, height = 600), plotOutput("perpracepiechart", width = 600, height = 600)),
                     tags$h2("These graphs allow you to visualize the race distribution of victims and perpetrators from 1980 to 2010. The visualization concerning the victim race is located on the left, and the visualization concerning the perpetrator is located on the right of the page.")),
+           tabPanel("Raw Data", DT::dataTableOutput("mytable")),
            tabPanel("About the Creators",
                     tags$h2("Meet the Creators!"),
                     tags$img(src = "creators.jpg", width = 600),
