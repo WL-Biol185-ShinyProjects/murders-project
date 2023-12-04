@@ -58,7 +58,8 @@ function(input, output, session) {
                popup = label_text) %>%
     addLegend("bottomright", 
               pal = qpal, 
-              values = ~popup_data$total_murders)
+              values = ~popup_data$total_murders,
+              title = "Percent of Population Murdered")
      })
   
 
