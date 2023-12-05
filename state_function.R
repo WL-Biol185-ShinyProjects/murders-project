@@ -63,7 +63,5 @@ popup_table <- popup_totalmurders %>%
 ##Joining coordinate and popup data
 popup_data <- left_join(popup_table, Coordinates, c("State" = "name"))
 
-#raw_data <- left_join(popup_table, common_table_perpetrator_sex, common_table_perpetrator_race, common_table_relationship, common_table_weapon, c("Year" = "Year"))
-
 
 
