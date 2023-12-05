@@ -27,10 +27,9 @@ qpal <- colorQuantile("Reds",
 function(input, output, session) {
   output$StateMap <- renderLeaflet({
     ##Joining geojson data with statistical data
-    (geo@data <- left_join(geo@data, filter(popup_data, input$range == Year), by = c("NAME" = "State")))
-    geo@data<-(left_join( geo@data, popup_data, by = c("NAME" = "State"
-                                                      )))
-    (label_text <- glue(
+    geo@data <- left_join(geo@data, filter(popup_data, input$range == Year), by = c("NAME" = "State"))
+    geo@data<-left_join(geo@data, popup_data, by = c("NAME" = "State" ))
+    label_text <- glue(
       "<b>State: </b> {popup_data$State}<br/>",
       "<b>Total Murders: </b> {popup_data$total_murders}<br/>",
       "<b>Victim Age: </b> {popup_data$Common_Victim_Age}<br/>",
@@ -39,12 +38,9 @@ function(input, output, session) {
       "<b>Relationship: </b> {Common_Relationship}<br/>",
       "<b>Weapon: </b> {Common_Weapon}<br/>",
       "<b>Perpetrator Age: </b> {popup_data$Common_Perpetrator_Age}<br/>",
-      "<b>Perpetrator Race: </b> {Common_Perpetrator_Race}<br/>",
-      "<b>Perpetrator Sex: </b> {Common_Perpetrator_Sex}<br/>") %>%
-      "<b>Perpetrator Sex: </b> {Common_Perpetrator_Sex}<br/>",
       "<b>Perpetrator Race: </b> {Common_Perpetrator_Race}<br/>"
-      ) %>%
-        lapply(htmltools::HTML)
+       %>%
+        lapply(htmltools::HTML))
     
     leaflet(geo) %>%
       setView(-96, 37.8, 4) %>%
@@ -62,7 +58,6 @@ function(input, output, session) {
     addLegend("bottomright", 
               pal = qpal, 
               values = ~popup_data$total_murders,
-              values = ~popup_data$total_murders,
               title = "Percent of Population Murdered")
      })
   
@@ -75,7 +70,6 @@ function(input, output, session) {
       xlab("Year") +
       ggtitle("Murder Incidence Through the Years")
       })
-
   
     output$barplot <- renderPlot({
       input_bargraph <- filter(murderbargraph2, input$Year == Year, input$State == State)
@@ -98,33 +92,14 @@ function(input, output, session) {
       geom_bar(stat = "identity", width =1, color = "black", alpha=0.7) +
       coord_polar("y", start = 0) + theme_void() + scale_fill_discrete(name="Perpetrator Race")  
   })
+  
+  
   output$mytable = DT::renderDataTable({popup_totalmurders})
+  output$downloadData <-downloadHandler(
+    filename = function(){paste("national-murder-trends.csv")},
+    content = function(file){write.csv(data(),file)}
+    )
   
-  
-  output$weaponpiechart <- renderPlot({
-    ggplot(common_table_weapon, aes(x = "", y = common_table_weapon$n, fill = common_table_weapon$Weapon)) + 
-      geom_bar(stat = "identity", width =1, color = "black", alpha=0.7) +
-      coord_polar("y", start = 0) + theme_void() + 
-      scale_fill_manual("Weapon Type", values = c("Handgun" = "deeppink", 
-                                             "Knife" = "brown", 
-                                             "Blunt Object" = "red",
-                                             "Firearm" = "blueviolet", 
-                                             "Unknown" = "darksalmon", 
-                                             "Shotgun" = "darkmagenta",
-                                             "Rifle" = "darkolivegreen1",
-                                             "Strangulation" = "darkgoldenrod1",
-                                             "Fire" = "darkgreen",
-                                             "Suffocation" = "deepskyblue",
-                                             "Gun" = "cadetblue1", 
-                                             "Drugs" = "cornsilk",
-                                             "Drowning" = "green", 
-                                             "Explosives" = "pink",
-                                             "Poison" = "coral1",
-                                             "Fall" = "yellow"
-                                             
-      ))
-    
-  })
   
   output$weaponpiechartinteractive <- renderPlot({
     input_pieplot <- filter(common_weapon_year, input$Year == Year)
@@ -151,7 +126,32 @@ function(input, output, session) {
       ))
     
   })
-
+  
+  
+  output$weaponpiechart <- renderPlot({
+    ggplot(common_table_weapon, aes(x = "", y = common_table_weapon$n, fill = common_table_weapon$Weapon)) + 
+      geom_bar(stat = "identity", width =1, color = "black", alpha=0.7) +
+      coord_polar("y", start = 0) + theme_void() + 
+      scale_fill_manual("Weapon Type", values = c("Handgun" = "deeppink", 
+                                                  "Knife" = "brown", 
+                                                  "Blunt Object" = "red",
+                                                  "Firearm" = "blueviolet", 
+                                                  "Unknown" = "darksalmon", 
+                                                  "Shotgun" = "darkmagenta",
+                                                  "Rifle" = "darkolivegreen1",
+                                                  "Strangulation" = "darkgoldenrod1",
+                                                  "Fire" = "darkgreen",
+                                                  "Suffocation" = "deepskyblue",
+                                                  "Gun" = "cadetblue1", 
+                                                  "Drugs" = "cornsilk",
+                                                  "Drowning" = "green", 
+                                                  "Explosives" = "pink",
+                                                  "Poison" = "coral1",
+                                                  "Fall" = "yellow"
+                                                  
+      ))
+    
+  })
   
   observe({
     input_data <- filter(popup_data, input$range == Year)
@@ -168,27 +168,13 @@ function(input, output, session) {
       "<b>Perpetrator Age: </b> {input_data$Common_Perpetrator_Age}<br/>",
       "<b>Perpetrator Race: </b> {Common_Perpetrator_Race}<br/>",
       "<b>Perpetrator Sex: </b> {Common_Perpetrator_Sex}<br/>"
-        "<b>State: </b> {input_data$State}<br/>",
-        "<b>Total Murders: </b> {input_data$total_murders}<br/>",
-        "<b>Victim Age: </b> {input_data$Common_Victim_Age}<br/>",
-        "<b>Victim Race: </b> {Common_Victim_Race}<br/>",
-         "<b>Victim Sex: </b> {Common_Victim_Sex}<br/>",
-        "<b>Relationship: </b> {Common_Relationship}<br/>",
-        "<b>Weapon: </b> {Common_Weapon}<br/>",
-         "<b>Perpetrator Age: </b> {input_data$Common_Perpetrator_Age}<br/>",
-        "<b>Perpetrator Sex: </b> {Common_Perpetrator_Sex}<br/>",
-          "<b>Perpetrator Race: </b> {Common_Perpetrator_Race}<br/>"
       %>%
-      lapply(htmltools::HTML)
-      )
+      lapply(htmltools::HTML))
     leafletProxy("StateMap", session) %>%
     clearMarkers() %>%
     addMarkers(lng = input_data$longitude,
                lat = input_data$latitude,
-               popup = paste(label_text)
-    )
-  })
-  
-
+               popup = paste(label_text))
+    })
 }
 
