@@ -58,10 +58,12 @@ Common_Perpetrator_Sex  <- common_table_perpetrator_sex[1, "Perpetrator.Sex"]
 popup_table <- popup_totalmurders %>%
   group_by(State, Year, total_murders) %>%
   summarise(Common_Victim_Age = round(mean(Victim.Age), 1),
-            Common_Perpetrator_Age = round(mean(Perpetrator.Age),1))
+    Common_Perpetrator_Age = round(mean(Perpetrator.Age),1))
 
 ##Joining coordinate and popup data
 popup_data <- left_join(popup_table, Coordinates, c("State" = "name"))
+
+#raw_data <- left_join(popup_table, common_table_perpetrator_sex, common_table_perpetrator_race, common_table_relationship, common_table_weapon, c("Year" = "Year"))
 
 
 
