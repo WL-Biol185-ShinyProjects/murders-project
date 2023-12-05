@@ -34,7 +34,7 @@ common_table_weapon <- murder_table %>%
 common_weapon_year <- murder_table %>%
   group_by(Year) %>%
   count(Weapon) %>%
-  arrange(desc(n))
+  arrange(order(Year))
 
 common_table_relationship <- murder_table %>%
   group_by(Year)%>%
