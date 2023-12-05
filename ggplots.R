@@ -21,7 +21,11 @@ murderbargraph2 <- distinct(murderbargraph) %>%
   mutate(Month = factor(Month, levels = month.name)) %>%
   arrange(Month)
 
-
+#year table for weapon pie chart 
+year_table <- murder_table %>%
+  select(Year, "Victim.Race", "Perpetrator.Race", Weapon) %>%
+  group_by(Year)
+  
 
 # Line graph of incident over time
 

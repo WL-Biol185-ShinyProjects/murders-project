@@ -3,6 +3,7 @@ library(tidyverse)
 library(leaflet)
 library(stringr)
 library(geojsonio)
+library(DT)
 
 
 murder_table <- readRDS("murders.RData")
@@ -14,16 +15,42 @@ source("state_function.R")
 
 source("ggplots.R")
 
-navbarPage(titlePanel("Murder Rates by State"),
+navbarPage(title = "Murder Trends in the U.S. from 1980 to 2014",
+           theme = shinythemes::shinytheme("sandstone"),
+           header = tags$style(HTML("
+                                    .leaflet-container {
+                                    background: #BAECFF;
+                                    outline: 0;
+                                    }"
+                                    )),
+           tags$style(type = "text/css", ".navbar-brand {font-size: 36px;}"),
            tabPanel("Map",
-                    tags$h2("This map summarizes data of US murder rates by state across selected years from 1980 to 2010"), 
-                    mainPanel(leafletOutput("StateMap"),
-                              sliderInput("range","Year", min=1980, max=2014, value = 1980, step = 1),
-                              checkboxInput("legend", "Show legend", TRUE))),
-           tabPanel("Murder Incidence by State and Year", plotOutput("barplot"), 
-                    selectInput("Year", "Year", choices = unique(murderbargraph2$Year)), 
-                    selectInput("State", "State", choices = unique(murderbargraph2$State))),
-           tabPanel("Weapon Pie Graph", plotOutput("weaponpiechart")),
-           tabPanel("Murder Incidence Through the Years", plotOutput("scatterplot")),
-           tabPanel("Race Pie Graph", splitLayout(plotOutput("racepiechart"), plotOutput("perpracepiechart")))
+                    tags$h2("What are the characteristics around murder incidences pertinent to each state across 1980 to 2014?"),
+                    mainPanel(leafletOutput("StateMap", width = 900, height = 600),
+                              sliderInput("range","Year", min=1980, max=2014, value = 1980, step = 1)
+                    )),
+           tabPanel("Murder Incidence by State and Year",
+                    tags$h2("How have murder incidences per month quantitatively changed across the years?"),
+                    plotOutput("barplot", width = 1200, height = 600), 
+                    fluidRow(
+                      column(width = 2, offset = 0,
+                        selectInput("Year", "Year", choices = unique(murderbargraph2$Year))), 
+                      column(width = 2, offset = 0,
+                        selectInput("State", "State", choices = unique(murderbargraph2$State))))),
+           tabPanel("Weapon Pie Graph",
+                    tags$h2("This graph allows you to visulize the most common murder weapon nation-wide from 1980 to 2010."),
+                    splitLayout(plotOutput("weaponpiechartinteractive", width = 600, height = 600), plotOutput("weaponpiechart", width = 600, height = 600)),
+                    selectInput("Year", "Year", choices = unique(common_weapon_year$Year))),
+           tabPanel("Murder Incidence Through the Years",
+                    tags$h2("This graph allows you to visualize the national trend of murder incidences from 1980 to 2010."),
+                    plotOutput("scatterplot", width = 1200, height = 600)),
+           tabPanel("Race Pie Graph",
+                    tags$h2("These graphs allow you to visualize the race distribution of victims and perpetrators from 1980 to 2010. The visualization concerning the victim race is located on the left, and the visualization concerning the perpetrator is located on the right of the page."),
+                    splitLayout(plotOutput("racepiechart", width = 600, height = 600), plotOutput("perpracepiechart", width = 600, height = 600))),
+           tabPanel("Raw Data", DT::dataTableOutput("mytable")),
+           tabPanel("About the Creators",
+                    tags$h2("Meet the Creators!"),
+                    tags$img(src = "creators.jpg", width = 600),
+                    tags$figcaption("Lucy Worthy, Mason Davis, Gretta Syrett, Anna Marie Harding")
+                    )
            )
