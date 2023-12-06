@@ -150,10 +150,10 @@ function(input, output, session) {
     
     output$downloadData <- downloadHandler(
       filename= function() {
-        paste('murderdata-', '.csv')
+        paste("popup_data", ".csv")
       }, 
-      content= function(con) {
-        write.csv(data, con)
+      content= function(file) {
+        write.csv(popup_data, file)
       }
     )
     
