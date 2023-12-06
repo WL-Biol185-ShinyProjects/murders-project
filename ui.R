@@ -28,7 +28,11 @@ navbarPage(title = "Murder Trends in the U.S. from 1980 to 2014",
                     tags$h2("What are the characteristics around murder incidences pertinent to each state across 1980 to 2014?"),
                     mainPanel(leafletOutput("StateMap", width = 900, height = 600),
                               sliderInput("range","Year", min=1980, max=2014, value = 1980, step = 1)
-                    )),
+                    ),
+                    tags$h2("The homicide rate doubled from the early 1960s to the 1970, increasing from 4.6 per 100,000 US residents to 9.7 per 100,000. In 1980 the rate peaked and then again in 1991. Since then the homicide rate has dramatically declined until 2010.. Our website hope to visualize these trends of decline and the characteristics surrounding the perpetrators and victims.")
+                    ),
+           
+           
            tabPanel("Murder Incidence by State and Year",
                     tags$h2("How have murder incidences per month quantitatively changed across the years?"),
                     plotOutput("barplot", width = 1200, height = 600), 
@@ -37,20 +41,32 @@ navbarPage(title = "Murder Trends in the U.S. from 1980 to 2014",
                         selectInput("Year", "Year", choices = unique(murderbargraph2$Year))), 
                       column(width = 2, offset = 0,
                         selectInput("State", "State", choices = unique(murderbargraph2$State))))),
+           
+           
            tabPanel("Weapon Pie Graph",
-                    tags$h2("This graph allows you to visulize the most common murder weapon nation-wide from 1980 to 2010."),
+                    tags$h2("What is the most common murder weapon nation-wide each year between 1980 to 2010 in comparison to the average across this entire time period?"),
                     splitLayout(plotOutput("weaponpiechartinteractive", width = 600, height = 600), plotOutput("weaponpiechart", width = 600, height = 600)),
-                    selectInput("Year", "Year", choices = unique(common_weapon_year$Year))),
+                    selectInput("Year", "Year", choices = unique(common_weapon_year$Year))
+           ), 
+           
            tabPanel("Murder Incidence Through the Years",
-                    tags$h2("This graph allows you to visualize the national trend of murder incidences from 1980 to 2010."),
+                    tags$h2("How has the national trend of murder rate changed from 1980 to 2010?"),
                     plotOutput("scatterplot", width = 1200, height = 600)),
+           
+           
            tabPanel("Race Pie Graph",
-                    tags$h2("These graphs allow you to visualize the race distribution of victims and perpetrators from 1980 to 2010. The visualization concerning the victim race is located on the left, and the visualization concerning the perpetrator is located on the right of the page."),
-                    splitLayout(plotOutput("racepiechart", width = 600, height = 600), plotOutput("perpracepiechart", width = 600, height = 600))),
-           tabPanel("Raw Data", DT::dataTableOutput("mytable")),
+                    tags$h2("What is the race distribution of the victims and perpetrators from 1980 to 2010? "),
+                    splitLayout(plotOutput("racepiechart", width = 600, height = 600), plotOutput("perpracepiechart", width = 600, height = 600)),
+                    tags$h2("The visualization concerning the victim race is located on the left, and the visualization concerning the perpetrator is located on the right of the page.")
+                    ),
+           
+           
+           tabPanel("Raw Data", DT::dataTableOutput("mytable"), downloadButton('downloadData', 'Download')),
+           
+           
            tabPanel("About the Creators",
                     tags$h2("Meet the Creators!"),
                     tags$img(src = "creators.jpg", width = 600),
-                    tags$figcaption("Lucy Worthy, Mason Davis, Gretta Syrett, Anna Marie Harding")
+                    tags$figcaption("Lucy Worthy: Biology Major, Mason Davis: Neurosciene Major, Gretta Syrett: Biology Major, Anna Marie Harding: Neuroscience Major")
                     )
            )

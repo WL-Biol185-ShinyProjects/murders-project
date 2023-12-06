@@ -147,6 +147,15 @@ function(input, output, session) {
                                                   
       ))
     
+    output$downloadData <- downloadHandler(
+      filename= function() {
+        paste('murderdata-', '.csv')
+      }, 
+      content= function(con) {
+        write.csv(data, con)
+      }
+    )
+    
   })
 
   
