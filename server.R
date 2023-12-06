@@ -123,9 +123,10 @@ function(input, output, session) {
     
   })
   
+  input_pieplot <- filter(common_weapon_year, input$Year == Year)
+  
   output$weaponpiechartinteractive <- renderPlot({
-    input_pieplot <- filter(common_weapon_year, input$Year == Year)
-    ggplot(input_pieplot, aes(x = "", y = n, fill = Weapon)) + 
+      ggplot(input_pieplot, aes(x = "", y = n, fill = Weapon)) + 
       geom_bar(stat = "identity", width =1, color = "black", alpha=0.7) +
       coord_polar("y", start = 0) + theme_void() + 
       scale_fill_manual("Weapon Type", values = c("Handgun" = "deeppink", 

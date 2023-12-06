@@ -46,7 +46,7 @@ navbarPage(title = "Murder Trends in the U.S. from 1980 to 2014",
            tabPanel("Weapon Pie Graph",
                     tags$h2("What is the most common murder weapon nation-wide each year between 1980 to 2010 in comparison to the average across this entire time period?"),
                     splitLayout(plotOutput("weaponpiechartinteractive", width = 600, height = 600), plotOutput("weaponpiechart", width = 600, height = 600)),
-                    selectInput("Year", "Year", choices = unique(common_weapon_year$Year))
+                    sliderInput("Year", "Year", min = 1980, max = 2010, value = 1980, step = 1)
            ), 
            
            tabPanel("Murder Incidence Through the Years",
