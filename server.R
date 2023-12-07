@@ -96,6 +96,7 @@ function(input, output, session) {
       coord_polar("y", start = 0) + theme_void() + scale_fill_discrete(name="Perpetrator Race")  
   })
   output$mytable = DT::renderDataTable({popup_totalmurders})
+  
   output$downloadData <- downloadHandler(
     filename = function() {
       paste("popup_data.csv", sep="")
@@ -131,7 +132,7 @@ function(input, output, session) {
   })
   
   output$weaponpiechartinteractive <- renderPlot({
-    input_pieplot <- filter(common_weapon_year, input$Year == Year)
+    input_pieplot <- filter(common_weapon_year, input$Year2 == Year)
     ggplot(input_pieplot, aes(x = "", y = n, fill = Weapon)) + 
       geom_bar(stat = "identity", width =1, color = "black", alpha=0.7) +
       coord_polar("y", start = 0) + theme_void() + 
