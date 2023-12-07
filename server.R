@@ -96,7 +96,14 @@ function(input, output, session) {
       coord_polar("y", start = 0) + theme_void() + scale_fill_discrete(name="Perpetrator Race")  
   })
   output$mytable = DT::renderDataTable({popup_totalmurders})
-  
+  output$downloadData <- downloadHandler(
+    filename = function() {
+      paste("popup_data.csv", sep="")
+    },
+    content = function(file) {
+      write.csv(popup_data, file)
+    }
+  )
   
   output$weaponpiechart <- renderPlot({
     ggplot(common_table_weapon, aes(x = "", y = common_table_weapon$n, fill = common_table_weapon$Weapon)) + 
