@@ -106,13 +106,14 @@ navbarPage(title = "Murder Trends in the U.S. from 1980 to 2014",
            
            tabPanel("Weapon Pie Graph", 
                     
-                    tags$h2("What is the most common murder weapon nation-wide each year between 1980 to 2010 in comparison to the average across this entire time period?"), 
+                    tags$h2("What is the most common murder weapon nation-wide each year between 1980 to 2010 in comparison to the average across this entire time period?
+                            The graph on the right is the average compared to the interactive graph on the right which allows data manipulation on a year to year basis"), 
                     
                     sliderInput("Year2", "Year", min = 1980, max = 2010, value = 1980, step = 1), 
                     
                     splitLayout(plotOutput("weaponpiechartinteractive", width = 500, height = 500), plotOutput("weaponpiechart", width = 500, height = 500)), 
                     
-                    tags$h2("The graph on the right is the average compared to the interactive graph on the right which allows data manipulation on a year to year basis") 
+                     
                     
            ), 
            
