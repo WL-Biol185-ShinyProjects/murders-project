@@ -62,7 +62,7 @@ navbarPage(title = "Murder Trends in the U.S. from 1980 to 2014",
                               
                               fluidRow( 
                                 
-                                column( leafletOutput("StateMap"), width= 6), 
+                                column( leafletOutput("StateMap"), width= 200), 
                                 
                                 column(tags$h2("The homicide rate doubled from the early 1960s to the 1970, increasing from 4.6 per 100,000 US residents to 9.7 per 100,000. 
 
@@ -110,7 +110,7 @@ navbarPage(title = "Murder Trends in the U.S. from 1980 to 2014",
                     
                     sliderInput("Year2", "Year", min = 1980, max = 2010, value = 1980, step = 1), 
                     
-                    splitLayout(plotOutput("weaponpiechartinteractive", width = 600, height = 600), plotOutput("weaponpiechart", width = 600, height = 600)), 
+                    splitLayout(plotOutput("weaponpiechartinteractive", width = 500, height = 500), plotOutput("weaponpiechart", width = 500, height = 500)), 
                     
                     tags$h2("The graph on the right is the average compared to the interactive graph on the right which allows data manipulation on a year to year basis") 
                     
@@ -172,10 +172,7 @@ navbarPage(title = "Murder Trends in the U.S. from 1980 to 2014",
                     
                     downloadButton("downloadData", "Download Our Data"), 
                     
-                    tags$h2("Our original data set is from XXX")), 
-           
-           ##need to add in link for data set from kaggle  
-           
+                    tags$h2("Our original data set is from https://www.kaggle.com/datasets/murderaccountability/homicide-reports/")), 
            
            
            tabPanel("About the Creators", 

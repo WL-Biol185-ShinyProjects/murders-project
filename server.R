@@ -37,8 +37,6 @@ qpal <- colorQuantile("Reds",
                       
                       n = 7) 
 
-
-
 ##Drawing the map    
 
 function(input, output, session) { 
@@ -118,9 +116,6 @@ function(input, output, session) {
   }) 
   
   
-  
-  
-  
   output$scatterplot <- renderPlot({ 
     
     ggplot(murderline, aes(x= Year, y = total_murders)) +  
@@ -136,9 +131,6 @@ function(input, output, session) {
       ggtitle("Murder Incidence Through the Years") 
     
   }) 
-  
-  
-  
   
   
   output$barplot <- renderPlot({ 
@@ -209,34 +201,20 @@ function(input, output, session) {
   
   
   output$mytable = DT::renderDataTable({popup_totalmurders}) 
-  
-  
   output$downloadData <- downloadHandler( 
-    
     filename = function() { 
-      
       paste("popup_data.csv", sep="") 
-      
     }, 
-    
     content = function(file) { 
-      
       write.csv(popup_data, file) 
-      
     } 
-    
   ) 
   
-  
-  
+
   output$weaponpiechart <- renderPlot({ 
-    
     ggplot(common_table_weapon, aes(x = "", y = common_table_weapon$n, fill = common_table_weapon$Weapon)) +  
-      
       geom_bar(stat = "identity", width =1, color = "black", alpha=0.7) + 
-      
       coord_polar("y", start = 0) + theme_void() +  
-      
       scale_fill_manual("Weapon Type", values = c("Handgun" = "deeppink",  
                                                   
                                                   "Knife" = "brown",  
@@ -269,26 +247,15 @@ function(input, output, session) {
                                                   
                                                   "Fall" = "yellow" 
                                                   
-                                                  
-                                                  
       )) 
-    
-    
-    
+
   }) 
-  
-  
   
   output$weaponpiechartinteractive <- renderPlot({ 
-    
     input_pieplot <- filter(common_weapon_year, input$Year2 == Year) 
-    
     ggplot(input_pieplot, aes(x = "", y = n, fill = Weapon)) +  
-      
       geom_bar(stat = "identity", width =1, color = "black", alpha=0.7) + 
-      
       coord_polar("y", start = 0) + theme_void() +  
-      
       scale_fill_manual("Weapon Type", values = c("Handgun" = "deeppink",  
                                                   
                                                   "Knife" = "brown",  
@@ -328,10 +295,6 @@ function(input, output, session) {
     
     
   }) 
-  
-  
-  
-  
   
   observe({ 
     
@@ -380,10 +343,6 @@ function(input, output, session) {
       ) 
     
   }) 
-  
-  
-  
-  
   
 } 
 
